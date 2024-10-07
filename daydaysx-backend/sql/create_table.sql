@@ -15,6 +15,7 @@ create table if not exists user
     userName     varchar(256)                           null comment '用户昵称',
     userAvatar   varchar(1024)                          null comment '用户头像',
     userProfile  varchar(512)                           null comment '用户简介',
+    userPlace    varchar(256)                           null comment '收货地址',
     userRole     varchar(256) default 'user'            not null comment '用户角色：user/admin/ban',
     createTime   datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
     updateTime   datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
@@ -46,10 +47,11 @@ create table if not exists goods_order
 (
     id         bigint auto_increment comment 'id' primary key,
     goodsId     bigint                             not null comment '商品 id',
-    orderId    bigint                             not null comment '订单 id',
     userId    bigint                             not null comment '买家的id',
     goodsNum   int      default 0                 not null comment '购买数量',
-    place     varchar(256)                       null comment '收货地址',
+    orderPrice decimal(10, 2) default 0.00        not null comment '订单价格',
+    StartPlace varchar(256)                       null comment '发货地址',
+    ArrivePlace     varchar(256)                       null comment '收货地址',
     placeStatus  int      default 0                 not null comment '订单状态 0-待发货，1-配送中 2-已送达 3-退货中',
     createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
     updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
@@ -57,3 +59,5 @@ create table if not exists goods_order
     index idx_goodsId (goodsId),
     index idx_userId (userId)
 ) comment '订单';
+
+

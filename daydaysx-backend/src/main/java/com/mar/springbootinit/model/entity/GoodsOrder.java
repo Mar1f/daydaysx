@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -24,10 +25,6 @@ public class GoodsOrder implements Serializable {
      */
     private Long goodsId;
 
-    /**
-     * 订单 id
-     */
-    private Long orderId;
 
     /**
      * 买家的id
@@ -38,11 +35,19 @@ public class GoodsOrder implements Serializable {
      * 购买数量
      */
     private Integer goodsNum;
+    /**
+     * 发货地址
+     */
+    private String startPlace;
 
     /**
      * 收货地址
      */
-    private String place;
+    private String arrivePlace;
+    /**
+     * 订单价格
+     */
+    private BigDecimal orderPrice;
 
     /**
      * 订单状态 0-待发货，1-配送中 2-已送达 3-退货中

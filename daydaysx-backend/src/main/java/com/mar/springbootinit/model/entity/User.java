@@ -48,7 +48,10 @@ public class User implements Serializable {
      * 用户简介
      */
     private String userProfile;
-
+    /**
+     * 收货地址
+     */
+    private String userPlace;
     /**
      * 用户角色：user/admin/ban
      */

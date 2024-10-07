@@ -35,7 +35,7 @@ public interface GoodsOrderService extends IService<GoodsOrder> {
     QueryWrapper<GoodsOrder> getQueryWrapper(GoodsOrderQueryRequest goodsOrderQueryRequest);
 
     /**
-     * 获取题目封装
+     * 获取订单封装
      *
      * @param goodsOrder
      * @param loginUser
@@ -44,7 +44,7 @@ public interface GoodsOrderService extends IService<GoodsOrder> {
     GoodsOrderVO getGoodsOrderVO(GoodsOrder goodsOrder, User loginUser);
 
     /**
-     * 分页获取题目封装
+     * 分页获取订单封装
      *
      * @param goodsOrderPage
      * @param loginUser

@@ -5,11 +5,15 @@ import com.mar.springbootinit.common.BaseResponse;
 import com.mar.springbootinit.common.ErrorCode;
 import com.mar.springbootinit.common.ResultUtils;
 import com.mar.springbootinit.exception.BusinessException;
+import com.mar.springbootinit.exception.ThrowUtils;
+import com.mar.springbootinit.model.dto.goods.GoodsQueryRequest;
 import com.mar.springbootinit.model.dto.goodsorder.GoodsOrderAddRequest;
 import com.mar.springbootinit.model.dto.goodsorder.GoodsOrderQueryRequest;
+import com.mar.springbootinit.model.entity.Goods;
 import com.mar.springbootinit.model.entity.GoodsOrder;
 import com.mar.springbootinit.model.entity.User;
 import com.mar.springbootinit.model.vo.GoodsOrderVO;
+import com.mar.springbootinit.model.vo.GoodsVO;
 import com.mar.springbootinit.service.GoodsOrderService;
 import com.mar.springbootinit.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +41,7 @@ public class GoodsOrderController {
     private UserService userService;
 
     /**
-     * 提交题目
+     * 提交订单
      *
      * @param goodsOrderAddRequest
      * @param request
@@ -49,7 +53,7 @@ public class GoodsOrderController {
         if (goodsOrderAddRequest == null || goodsOrderAddRequest.getGoodsId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        // 登录才能点赞
+        // 登录才能下单
         final User loginUser = userService.getLoginUser(request);
         long goodsOrderId = goodsOrderService.doGoodsOrder(goodsOrderAddRequest, loginUser);
         return ResultUtils.success(goodsOrderId);
@@ -67,7 +71,7 @@ public class GoodsOrderController {
                                                                  HttpServletRequest request) {
         long current = goodsOrderQueryRequest.getCurrent();
         long size = goodsOrderQueryRequest.getPageSize();
-        // 从数据库中查询原始的题目提交分页信息
+        // 从数据库中查询原始的订单提交分页信息
         Page<GoodsOrder> goodsOrderPage = goodsOrderService.page(new Page<>(current, size),
                 goodsOrderService.getQueryWrapper(goodsOrderQueryRequest));
         final User loginUser = userService.getLoginUser(request);

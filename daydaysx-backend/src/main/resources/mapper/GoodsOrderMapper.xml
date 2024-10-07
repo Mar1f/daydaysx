@@ -7,10 +7,11 @@
     <resultMap id="BaseResultMap" type="com.mar.springbootinit.model.entity.GoodsOrder">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="goodsId" column="goodsId" jdbcType="BIGINT"/>
-            <result property="orderId" column="orderId" jdbcType="BIGINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
             <result property="goodsNum" column="goodsNum" jdbcType="INTEGER"/>
-            <result property="place" column="place" jdbcType="VARCHAR"/>
+            <result property="orderPrice" column="orderPrice" jdbcType="DECIMAL"/>
+            <result property="startPlace" column="StartPlace" jdbcType="VARCHAR"/>
+            <result property="arrivePlace" column="ArrivePlace" jdbcType="VARCHAR"/>
             <result property="placeStatus" column="placeStatus" jdbcType="INTEGER"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
@@ -18,9 +19,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,goodsId,orderId,
-        userId,goodsNum,place,
-        placeStatus,createTime,updateTime,
-        isDelete
+        id,goodsId,userId,
+        goodsNum,orderPrice,StartPlace,
+        ArrivePlace,placeStatus,createTime,
+        updateTime,isDelete
     </sql>
 </mapper>

@@ -3,6 +3,8 @@ package com.mar.springbootinit.model.vo;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.mar.springbootinit.model.entity.Goods;
+import com.mar.springbootinit.model.entity.GoodsOrder;
 import com.mar.springbootinit.model.entity.Post;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -29,10 +31,7 @@ public class GoodsOrderVO implements Serializable {
      */
     private Long goodsId;
 
-    /**
-     * 订单 id
-     */
-    private Long orderId;
+
 
     /**
      * 买家的id
@@ -71,30 +70,32 @@ public class GoodsOrderVO implements Serializable {
     /**
      * 包装类转对象
      *
-     * @param postVO
+     * @param goodsOrderVO
      * @return
      */
-    public static Post voToObj(GoodsOrderVO postVO) {
-        if (postVO == null) {
+    public static GoodsOrder voToObj(GoodsOrderVO goodsOrderVO) {
+        if (goodsOrderVO == null) {
             return null;
         }
-        Post post = new Post();
-        BeanUtils.copyProperties(postVO, post);
-        return post;
+        GoodsOrder goodsOrder = new GoodsOrder();
+        BeanUtils.copyProperties(goodsOrderVO, goodsOrder);
+        return goodsOrder;
     }
 
     /**
      * 对象转包装类
      *
-     * @param post
+     * @param goodsOrder
      * @return
      */
-    public static GoodsOrderVO objToVo(Post post) {
-        if (post == null) {
+    public static GoodsOrderVO objToVo(GoodsOrder goodsOrder) {
+        if (goodsOrder == null) {
             return null;
         }
-        GoodsOrderVO postVO = new GoodsOrderVO();
-        BeanUtils.copyProperties(post, postVO);
-        return postVO;
+        GoodsOrderVO goodsOrderVO = new GoodsOrderVO();
+        BeanUtils.copyProperties(goodsOrder, goodsOrderVO);
+        return goodsOrderVO;
     }
+
+    private static final long serialVersionUID = 1L;
 }

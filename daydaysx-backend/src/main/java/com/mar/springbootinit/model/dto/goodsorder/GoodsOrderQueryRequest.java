@@ -16,9 +16,13 @@ import java.io.Serializable;
 public class GoodsOrderQueryRequest extends PageRequest implements Serializable {
 
     /**
-     * 订单查询请求
+     * 订单 id
      */
-    private PostQueryRequest postQueryRequest;
+    private Long goodsId;
+    /**
+     * 订单状态
+     */
+    private Integer placeStatus;
 
     /**
      * 用户 id
