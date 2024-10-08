@@ -96,11 +96,14 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods>
         String content = goodsQueryRequest.getContent();
         List<String> tags = goodsQueryRequest.getTags();
         BigDecimal price = goodsQueryRequest.getPrice();
+        String searchText = goodsQueryRequest.getSearchText();
         String place = goodsQueryRequest.getPlace();
         Long userId = goodsQueryRequest.getUserId();
         String sortField = goodsQueryRequest.getSortField();
         String sortOrder = goodsQueryRequest.getSortOrder();
-
+        if (StringUtils.isNotBlank(searchText)) {
+            queryWrapper.and(qw -> qw.like("title", searchText).or().like("content", searchText));
+        }
         // 拼接查询条件
         queryWrapper.like(StringUtils.isNotBlank(title), "title", title);
         queryWrapper.like(StringUtils.isNotBlank(content), "content", content);

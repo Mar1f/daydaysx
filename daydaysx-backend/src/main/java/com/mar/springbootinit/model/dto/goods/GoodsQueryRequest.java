@@ -39,7 +39,10 @@ public class GoodsQueryRequest extends PageRequest implements Serializable {
      * 标签列表（json 数组）
      */
     private List<String>  tags;
-
+    /**
+     * 搜索词
+     */
+    private String searchText;
     /**
      * 价格
      */
