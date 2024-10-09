@@ -1,5 +1,5 @@
 import { userLogoutUsingPost } from '@/services/backend/userController';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
 import { Avatar, Button, Space } from 'antd';
 import { stringify } from 'querystring';
@@ -13,7 +13,7 @@ export type GlobalHeaderRightProps = {
   menu?: boolean;
 };
 
-export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
+export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu=true }) => {
   /**
    * 退出登录，并且将当前的 url 保存
    */
@@ -70,6 +70,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
             key: 'center',
             icon: <UserOutlined />,
             label: '个人中心',
+          },
+          {
+            key: 'cart',
+            icon: <ShoppingCartOutlined />,
+            label: '购物车',
           },
           {
             key: 'settings',
