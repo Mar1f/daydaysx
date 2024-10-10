@@ -5,6 +5,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseGoodsVO_ = {
+    code?: number;
+    data?: GoodsVO;
+    message?: string;
+  };
+
   type BaseResponseInt_ = {
     code?: number;
     data?: number;
@@ -19,7 +25,25 @@ declare namespace API {
 
   type BaseResponseLong_ = {
     code?: number;
-    data?: string;
+    data?: number;
+    message?: string;
+  };
+
+  type BaseResponsePageGoods_ = {
+    code?: number;
+    data?: PageGoods_;
+    message?: string;
+  };
+
+  type BaseResponsePageGoodsOrderVO_ = {
+    code?: number;
+    data?: PageGoodsOrderVO_;
+    message?: string;
+  };
+
+  type BaseResponsePageGoodsVO_ = {
+    code?: number;
+    data?: PageGoodsVO_;
     message?: string;
   };
 
@@ -71,39 +95,143 @@ declare namespace API {
     message?: string;
   };
 
-  type checkUsingGETParams = {
-    /** echostr */
-    echostr?: string;
-    /** nonce */
-    nonce?: string;
-    /** signature */
-    signature?: string;
-    /** timestamp */
-    timestamp?: string;
+  type DeleteRequest = {
+    id?: number;
   };
 
-  type DeleteRequest = {
-    id?: string;
+  type getGoodsVOByIdUsingGETParams = {
+    /** id */
+    id?: number;
   };
 
   type getPostVOByIdUsingGETParams = {
     /** id */
-    id?: string;
+    id?: number;
   };
 
   type getUserByIdUsingGETParams = {
     /** id */
-    id?: string;
+    id?: number;
   };
 
   type getUserVOByIdUsingGETParams = {
     /** id */
-    id?: string;
+    id?: number;
+  };
+
+  type Goods = {
+    buysNum?: number;
+    content?: string;
+    createTime?: string;
+    goodsNum?: number;
+    goodsPic?: string;
+    id?: number;
+    isDelete?: number;
+    place?: string;
+    price?: number;
+    tags?: string;
+    title?: string;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type GoodsAddRequest = {
+    content?: string;
+    goodsNum?: number;
+    goodsPic?: string;
+    place?: string;
+    price?: number;
+    tags?: string[];
+    title?: string;
+  };
+
+  type GoodsEditRequest = {
+    content?: string;
+    goodsNum?: number;
+    goodsPic?: string;
+    id?: number;
+    place?: string;
+    price?: number;
+    tags?: string[];
+    title?: string;
+  };
+
+  type GoodsOrderAddRequest = {
+    goodsId?: number;
+    goodsNum?: number;
+    goodsPrice?: number;
+  };
+
+  type GoodsOrderQueryRequest = {
+    current?: number;
+    goodsId?: number;
+    pageSize?: number;
+    placeStatus?: number;
+    sortField?: string;
+    sortOrder?: string;
+    userId?: number;
+  };
+
+  type GoodsOrderVO = {
+    createTime?: string;
+    goodsId?: number;
+    goodsNum?: number;
+    goodsVO?: GoodsVO;
+    id?: number;
+    place?: string;
+    placeStatus?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type GoodsQueryRequest = {
+    buysNum?: number;
+    content?: string;
+    current?: number;
+    goodsNum?: number;
+    id?: number;
+    number?: number;
+    pageSize?: number;
+    place?: string;
+    price?: number;
+    searchText?: string;
+    sortField?: string;
+    sortOrder?: string;
+    tags?: string[];
+    title?: string;
+    userId?: number;
+  };
+
+  type GoodsUpdateRequest = {
+    content?: string;
+    goodsPic?: string;
+    id?: number;
+    number?: number;
+    place?: string;
+    price?: number;
+    tags?: string[];
+    title?: string;
+  };
+
+  type GoodsVO = {
+    buysNum?: number;
+    content?: string;
+    createTime?: string;
+    goodsNum?: number;
+    goodsPic?: string;
+    id?: number;
+    place?: string;
+    price?: number;
+    tags?: string[];
+    title?: string;
+    updateTime?: string;
+    userId?: number;
+    userVO?: UserVO;
   };
 
   type LoginUserVO = {
     createTime?: string;
-    id?: string;
+    id?: number;
     updateTime?: string;
     userAvatar?: string;
     userName?: string;
@@ -116,69 +244,108 @@ declare namespace API {
     column?: string;
   };
 
-  type PagePost_ = {
+  type PageGoods_ = {
     countId?: string;
-    current?: string;
-    maxLimit?: string;
+    current?: number;
+    maxLimit?: number;
     optimizeCountSql?: boolean;
     orders?: OrderItem[];
-    pages?: string;
+    pages?: number;
+    records?: Goods[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageGoodsOrderVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: GoodsOrderVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageGoodsVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: GoodsVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PagePost_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
     records?: Post[];
     searchCount?: boolean;
-    size?: string;
-    total?: string;
+    size?: number;
+    total?: number;
   };
 
   type PagePostVO_ = {
     countId?: string;
-    current?: string;
-    maxLimit?: string;
+    current?: number;
+    maxLimit?: number;
     optimizeCountSql?: boolean;
     orders?: OrderItem[];
-    pages?: string;
+    pages?: number;
     records?: PostVO[];
     searchCount?: boolean;
-    size?: string;
-    total?: string;
+    size?: number;
+    total?: number;
   };
 
   type PageUser_ = {
     countId?: string;
-    current?: string;
-    maxLimit?: string;
+    current?: number;
+    maxLimit?: number;
     optimizeCountSql?: boolean;
     orders?: OrderItem[];
-    pages?: string;
+    pages?: number;
     records?: User[];
     searchCount?: boolean;
-    size?: string;
-    total?: string;
+    size?: number;
+    total?: number;
   };
 
   type PageUserVO_ = {
     countId?: string;
-    current?: string;
-    maxLimit?: string;
+    current?: number;
+    maxLimit?: number;
     optimizeCountSql?: boolean;
     orders?: OrderItem[];
-    pages?: string;
+    pages?: number;
     records?: UserVO[];
     searchCount?: boolean;
-    size?: string;
-    total?: string;
+    size?: number;
+    total?: number;
   };
 
   type Post = {
     content?: string;
     createTime?: string;
     favourNum?: number;
-    id?: string;
+    id?: number;
     isDelete?: number;
     tags?: string;
     thumbNum?: number;
     title?: string;
     updateTime?: string;
-    userId?: string;
+    userId?: number;
   };
 
   type PostAddRequest = {
@@ -189,13 +356,13 @@ declare namespace API {
 
   type PostEditRequest = {
     content?: string;
-    id?: string;
+    id?: number;
     tags?: string[];
     title?: string;
   };
 
   type PostFavourAddRequest = {
-    postId?: string;
+    postId?: number;
   };
 
   type PostFavourQueryRequest = {
@@ -204,15 +371,15 @@ declare namespace API {
     postQueryRequest?: PostQueryRequest;
     sortField?: string;
     sortOrder?: string;
-    userId?: string;
+    userId?: number;
   };
 
   type PostQueryRequest = {
     content?: string;
     current?: number;
-    favourUserId?: string;
-    id?: string;
-    notId?: string;
+    favourUserId?: number;
+    id?: number;
+    notId?: number;
     orTags?: string[];
     pageSize?: number;
     searchText?: string;
@@ -220,16 +387,16 @@ declare namespace API {
     sortOrder?: string;
     tags?: string[];
     title?: string;
-    userId?: string;
+    userId?: number;
   };
 
   type PostThumbAddRequest = {
-    postId?: string;
+    postId?: number;
   };
 
   type PostUpdateRequest = {
     content?: string;
-    id?: string;
+    id?: number;
     tags?: string[];
     title?: string;
   };
@@ -240,13 +407,13 @@ declare namespace API {
     favourNum?: number;
     hasFavour?: boolean;
     hasThumb?: boolean;
-    id?: string;
+    id?: number;
     tagList?: string[];
     thumbNum?: number;
     title?: string;
     updateTime?: string;
     user?: UserVO;
-    userId?: string;
+    userId?: number;
   };
 
   type uploadFileUsingPOSTParams = {
@@ -255,15 +422,14 @@ declare namespace API {
 
   type User = {
     createTime?: string;
-    id?: string;
+    id?: number;
     isDelete?: number;
-    mpOpenId?: string;
-    unionId?: string;
     updateTime?: string;
     userAccount?: string;
     userAvatar?: string;
     userName?: string;
     userPassword?: string;
+    userPlace?: string;
     userProfile?: string;
     userRole?: string;
   };
@@ -275,11 +441,6 @@ declare namespace API {
     userRole?: string;
   };
 
-  type userLoginByWxOpenUsingGETParams = {
-    /** code */
-    code: string;
-  };
-
   type UserLoginRequest = {
     userAccount?: string;
     userPassword?: string;
@@ -287,7 +448,7 @@ declare namespace API {
 
   type UserQueryRequest = {
     current?: number;
-    id?: string;
+    id?: number;
     mpOpenId?: string;
     pageSize?: number;
     sortField?: string;
@@ -311,7 +472,7 @@ declare namespace API {
   };
 
   type UserUpdateRequest = {
-    id?: string;
+    id?: number;
     userAvatar?: string;
     userName?: string;
     userProfile?: string;
@@ -320,7 +481,7 @@ declare namespace API {
 
   type UserVO = {
     createTime?: string;
-    id?: string;
+    id?: number;
     userAvatar?: string;
     userName?: string;
     userProfile?: string;

@@ -73,7 +73,7 @@ export default defineConfig({
    * @name layout 插件
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: '前端万用模板',
+  title: '天天生鲜',
   layout: {
     locale: true,
     ...defaultSettings,

@@ -1,6 +1,8 @@
 package com.mar.springbootinit.controller;
 
+import cn.hutool.core.codec.Base64Encoder;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mar.springbootinit.annotation.AuthCheck;
 import com.mar.springbootinit.common.BaseResponse;
@@ -10,6 +12,7 @@ import com.mar.springbootinit.common.ResultUtils;
 import com.mar.springbootinit.constant.UserConstant;
 import com.mar.springbootinit.exception.BusinessException;
 import com.mar.springbootinit.exception.ThrowUtils;
+import com.mar.springbootinit.manager.CacheManager;
 import com.mar.springbootinit.model.dto.goods.GoodsAddRequest;
 import com.mar.springbootinit.model.dto.goods.GoodsEditRequest;
 import com.mar.springbootinit.model.dto.goods.GoodsQueryRequest;
@@ -41,7 +44,8 @@ public class GoodsController {
 
     @Resource
     private UserService userService;
-
+    @Resource
+    private CacheManager cacheManager;
     // region 增删改查
 
     /**
@@ -70,7 +74,60 @@ public class GoodsController {
         long newGoodsId = goods.getId();
         return ResultUtils.success(newGoodsId);
     }
+    /**
+     * 快速分页获取列表（封装类）
+     *
+     * @param goodsQueryRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/list/page/vo/fast")
+    public BaseResponse<Page<GoodsVO>> listGoodsVOByPageFast(@RequestBody GoodsQueryRequest goodsQueryRequest,
+                                                                     HttpServletRequest request) {
+        long current = goodsQueryRequest.getCurrent();
+        long size = goodsQueryRequest.getPageSize();
+        // 优先从缓存读取
+        String cacheKey = getPageCacheKey(goodsQueryRequest);
+        Object cacheValue = cacheManager.get(cacheKey);
+        if (cacheValue != null) {
+            return ResultUtils.success((Page<GoodsVO>) cacheValue);
+        }
 
+        // 限制爬虫
+        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        QueryWrapper<Goods> queryWrapper = goodsService.getQueryWrapper(goodsQueryRequest);
+        queryWrapper.select("id",
+                "title",
+                "content",
+                "tags",
+                "goodsPic",
+                "price",
+                "userId",
+                "goodsNum",
+                "place",
+                "buysNum",
+                "createTime",
+                "updateTime"
+        );
+        Page<Goods> goodsPage = goodsService.page(new Page<>(current, size), queryWrapper);
+        Page<GoodsVO> goodsVOPage = goodsService.getGoodsVOPage(goodsPage, request);
+        // 写入缓存
+        cacheManager.put(cacheKey, goodsVOPage);
+        return ResultUtils.success(goodsVOPage);
+    }
+    /**
+     * 获取分页缓存 keu
+     *
+     * @param goodsQueryRequest
+     * @return
+     */
+    public static String getPageCacheKey(GoodsQueryRequest goodsQueryRequest) {
+        String jsonStr = JSONUtil.toJsonStr(goodsQueryRequest);
+        // 请求参数编码
+        String base64 = Base64Encoder.encode(jsonStr);
+        String key = "goods:page:" + base64;
+        return key;
+    }
     /**
      * 删除
      *
