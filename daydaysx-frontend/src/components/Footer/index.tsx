@@ -14,12 +14,6 @@ const Footer: React.FC = () => {
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
         {
-          key: 'codeNav',
-          title: '编程',
-          href: '#',
-          blankTarget: true,
-        },
-        {
           key: 'Ant Design',
           title: '编程',
           href: '#',
@@ -29,10 +23,10 @@ const Footer: React.FC = () => {
           key: 'github',
           title: (
             <>
-              <GithubOutlined /> 源码
+              <GithubOutlined /> Mar1f
             </>
           ),
-          href: '#',
+          href: 'https://github.com/Mar1f',
           blankTarget: true,
         },
       ]}

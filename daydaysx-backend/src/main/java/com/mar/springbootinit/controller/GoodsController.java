@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -65,6 +66,28 @@ public class GoodsController {
         List<String> tags = goodsAddRequest.getTags();
         if (tags != null) {
             goods.setTags(JSONUtil.toJsonStr(tags));
+        }
+        if(goodsAddRequest.getTitle() != null){
+            goods.setTitle(JSONUtil.toJsonStr(goodsAddRequest.getTitle()));
+        }
+        if(goodsAddRequest.getContent() != null){
+            goods.setContent(JSONUtil.toJsonStr(goodsAddRequest.getContent()));
+        }
+        String goodsPic = goodsAddRequest.getGoodsPic();
+        if(goodsPic != null){
+            goods.setGoodsPic(JSONUtil.toJsonStr(goodsPic));
+        }
+        BigDecimal price = goodsAddRequest.getPrice();
+        if(price != null){
+            goods.setGoodsPic(JSONUtil.toJsonStr(goodsPic));
+        }
+        String place = goodsAddRequest.getPlace();
+        if(place != null){
+            goods.setPlace(place);
+        }
+        Integer goodsNum = goodsAddRequest.getGoodsNum();
+        if(goodsNum != null){
+            goods.setGoodsNum(goodsNum);
         }
         goodsService.validGoods(goods, true);
         User loginUser = userService.getLoginUser(request);
