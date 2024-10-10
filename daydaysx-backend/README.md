@@ -175,3 +175,6 @@ String upperDataKey = "UserComment";
 ```
 
 生成代码后，可以移动到实际项目中，并且按照 `// todo` 注释的提示来针对自己的业务需求进行修改。
+F:
+cd redis
+redis-server.exe redis.windows.conf
