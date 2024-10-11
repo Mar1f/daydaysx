@@ -29,6 +29,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageCartVO_ = {
+    code?: number;
+    data?: PageCartVO_;
+    message?: string;
+  };
+
   type BaseResponsePageGoods_ = {
     code?: number;
     data?: PageGoods_;
@@ -95,12 +101,52 @@ declare namespace API {
     message?: string;
   };
 
-  type DeleteRequest = {
+  type CartAddRequest = {
+    buysNum?: number;
+    goodsId?: number;
+    goodsPrice?: number;
+  };
+
+  type CartEditRequest = {
+    buysNum?: string;
     id?: number;
   };
 
-  type getGoodsVOByIdUsingGET1Params = {
-    /** id */
+  type CartQueryRequest = {
+    buysNum?: string;
+    current?: number;
+    goodsId?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    tags?: string[];
+    title?: string;
+    userId?: number;
+  };
+
+  type CartUpdateRequest = {
+    buysNum?: string;
+    id?: number;
+    tags?: string[];
+  };
+
+  type CartVO = {
+    buysNum?: number;
+    content?: string;
+    createTime?: string;
+    goodsId?: number;
+    goodsPic?: string;
+    goodsPrice?: number;
+    goodsVO?: GoodsVO;
+    id?: number;
+    price?: number;
+    tags?: string[];
+    title?: string;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type DeleteRequest = {
     id?: number;
   };
 
@@ -249,6 +295,19 @@ declare namespace API {
   type OrderItem = {
     asc?: boolean;
     column?: string;
+  };
+
+  type PageCartVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: CartVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
   };
 
   type PageGoods_ = {

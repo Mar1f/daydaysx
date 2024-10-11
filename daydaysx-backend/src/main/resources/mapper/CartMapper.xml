@@ -2,17 +2,19 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mar.springbootinit.mapper.ShoppingCartMapper">
+<mapper namespace="com.mar.springbootinit.mapper.CartMapper">
 
-    <resultMap id="BaseResultMap" type="com.mar.springbootinit.model.entity.ShoppingCart">
+    <resultMap id="BaseResultMap" type="com.mar.springbootinit.model.entity.Cart">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="userId" column="userId" jdbcType="BIGINT"/>
             <result property="goodsId" column="goodsId" jdbcType="BIGINT"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="goodsPic" column="goodsPic" jdbcType="VARCHAR"/>
             <result property="tags" column="tags" jdbcType="VARCHAR"/>
+            <result property="goodsPrice" column="GoodsPrice" jdbcType="DECIMAL"/>
             <result property="price" column="price" jdbcType="DECIMAL"/>
-            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="buysNum" column="BuysNum" jdbcType="INTEGER"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
@@ -20,8 +22,9 @@
 
     <sql id="Base_Column_List">
         id,userId,goodsId,
-        content,goodsPic,tags,
-        price,quantity,createTime,
-        updateTime,isDelete
+        content,title,goodsPic,
+        tags,GoodsPrice,price,
+        BuysNum,createTime,updateTime,
+        isDelete
     </sql>
 </mapper>

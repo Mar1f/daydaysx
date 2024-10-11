@@ -20,7 +20,7 @@ export default [
       { icon: 'tools', path: '/admin/goods', component: './Admin/Goods', name: "商品管理" },
     ],
   },
-  { path: '/cart', icon: 'ShoppingCartOutlined', component: './cart/cart', name: '购物车' },
+  { path: '/cart', icon: 'ShoppingCartOutlined', component: './cart/index', name: '购物车' },
   { path: '/order', icon: 'ShoppingCartOutlined', component: './Order/index', name: '订单' },
   { path: '/about', icon: 'ShoppingCartOutlined', component: './Our/about', name: '关于我们' },
   {

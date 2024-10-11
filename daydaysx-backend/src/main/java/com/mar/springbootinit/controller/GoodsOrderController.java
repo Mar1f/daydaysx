@@ -102,23 +102,6 @@ public class GoodsOrderController {
     }
 
 
-    /**
-     * 根据 id 获取
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/get/vo")
-    public BaseResponse<GoodsVO> getGoodsVOById(long id, HttpServletRequest request) {
-        if (id <= 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        Goods goods = goodsService.getById(id);
-        if (goods == null) {
-            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
-        }
-        return ResultUtils.success(goodsService.getGoodsVO(goods, request));
-    }
 
 
 }

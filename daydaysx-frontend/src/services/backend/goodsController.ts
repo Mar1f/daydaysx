@@ -33,7 +33,7 @@ export async function deleteGoodsUsingPost(
 }
 
 /** editGoods POST /api/goods/edit */
-export async function editGoodsUsingPost(
+export async function editGoodsUsingPost1(
   body: API.GoodsEditRequest,
   options?: { [key: string]: any },
 ) {
