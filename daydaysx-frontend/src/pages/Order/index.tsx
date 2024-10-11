@@ -18,13 +18,12 @@ const GoodsAdminPage: React.FC = () => {
   // 当前商品点击的数据
   const [currentRow, setCurrentRow] = useState<API.GoodsOrderVO>();
 
-
   /**
    * 表格列配置
    */
-  const columns: ProColumns<API.GoodsOrderVO>[] = [
+  const columns: ProColumns<API.GoodsOrderVO,API.GoodsVO>[] = [
     {
-      title: 'id',
+      title: '订单号',
       dataIndex: 'id',
       valueType: 'text',
       hideInForm: true,
@@ -34,6 +33,11 @@ const GoodsAdminPage: React.FC = () => {
       dataIndex: 'goodsId',
       valueType: 'text',
     },
+    // {
+    //   title: '商品',
+    //   dataIndex: 'title',
+    //   valueType: 'text',
+    // },
     {
       title: '收货地址',
       dataIndex: 'arrivePlace',
@@ -53,6 +57,17 @@ const GoodsAdminPage: React.FC = () => {
       title: '订单价格',
       dataIndex: 'orderPrice',
       valueType: 'text',
+    },
+    {
+      title: '快递状态',
+      dataIndex: 'placeStatus',
+      valueType: 'text',
+      valueEnum: {
+        0: { text: '未发货', status: 'Default' }, // 对应 WAITING
+        1: { text: '配送中', status: 'Processing' }, // 对应 RUNNING
+        2: { text: '已送达', status: 'Success' }, // 对应 SUCCEED
+        3: { text: '退货中', status: 'Error' }, // 对应 FAILED
+      },
     },
     {
       title: '创建用户',

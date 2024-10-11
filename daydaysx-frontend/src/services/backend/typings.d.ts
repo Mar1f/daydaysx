@@ -491,6 +491,7 @@ declare namespace API {
     id?: number;
     userAvatar?: string;
     userName?: string;
+    userPlace?: string;
     userProfile?: string;
     userRole?: string;
   };
