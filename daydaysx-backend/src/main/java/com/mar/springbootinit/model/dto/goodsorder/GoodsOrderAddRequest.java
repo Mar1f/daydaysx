@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class GoodsOrderAddRequest implements Serializable {
 
     /**
-     * 订单 id
+     * 商品 id
      */
     private Long goodsId;
     /**

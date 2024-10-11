@@ -118,7 +118,8 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         long userId = loginUser.getId();
         // 处理脱敏
         if (userId != goodsOrder.getUserId() && !userService.isAdmin(loginUser)) {
-            goodsOrderVO.getPlace();
+            goodsOrderVO.getStartPlace();
+            goodsOrderVO.getArrivePlace();
         }
         return goodsOrderVO;
     }

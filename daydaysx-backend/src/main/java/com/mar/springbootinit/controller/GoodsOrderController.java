@@ -15,12 +15,10 @@ import com.mar.springbootinit.model.entity.User;
 import com.mar.springbootinit.model.vo.GoodsOrderVO;
 import com.mar.springbootinit.model.vo.GoodsVO;
 import com.mar.springbootinit.service.GoodsOrderService;
+import com.mar.springbootinit.service.GoodsService;
 import com.mar.springbootinit.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +37,8 @@ public class GoodsOrderController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private GoodsService goodsService;
 
     /**
      * 提交订单
@@ -59,24 +59,43 @@ public class GoodsOrderController {
         return ResultUtils.success(goodsOrderId);
     }
 
-    /**
-     * 分页获取订单提交列表
-     *
-     * @param goodsOrderQueryRequest
-     * @param request
-     * @return
-     */
     @PostMapping("/list/page")
     public BaseResponse<Page<GoodsOrderVO>> listGoodsOrderByPage(@RequestBody GoodsOrderQueryRequest goodsOrderQueryRequest,
                                                                  HttpServletRequest request) {
         long current = goodsOrderQueryRequest.getCurrent();
         long size = goodsOrderQueryRequest.getPageSize();
-        // 从数据库中查询原始的订单提交分页信息
-        Page<GoodsOrder> goodsOrderPage = goodsOrderService.page(new Page<>(current, size),
-                goodsOrderService.getQueryWrapper(goodsOrderQueryRequest));
+        // 获取当前登录的用户
         final User loginUser = userService.getLoginUser(request);
-        // 返回脱敏信息
+
+        // 获取当前用户的ID
+        Long loginUserId = loginUser.getId();
+
+        // 查询当前登录用户的订单
+        Page<GoodsOrder> goodsOrderPage = goodsOrderService.page(new Page<>(current, size),
+                goodsOrderService.getQueryWrapper(goodsOrderQueryRequest)
+                        .eq("userId", loginUserId)); // 添加过滤条件：只显示当前用户创建的订单
+
+        // 返回脱敏后的订单信息
         return ResultUtils.success(goodsOrderService.getGoodsOrderVOPage(goodsOrderPage, loginUser));
+    }
+
+
+    /**
+     * 根据 id 获取
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/get/vo")
+    public BaseResponse<GoodsVO> getGoodsVOById(long id, HttpServletRequest request) {
+        if (id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Goods goods = goodsService.getById(id);
+        if (goods == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        return ResultUtils.success(goodsService.getGoodsVO(goods, request));
     }
 
 
