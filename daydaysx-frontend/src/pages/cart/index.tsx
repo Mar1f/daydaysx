@@ -3,11 +3,10 @@ import {
   deleteCartGoodsUsingPost,
   listCartVoByPageFastUsingPost
 } from '@/services/backend/cartController';
-import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Button, message, Select, Space, Tag, Typography } from 'antd';
+import { Button, message, Select, Space, Tag, Typography, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 
 /**
@@ -17,30 +16,30 @@ import React, { useRef, useState } from 'react';
  */
 const CartPage: React.FC = () => {
   // 是否显示更新窗口
-  const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   // 当前商品点击的数据
   const [currentRow, setCurrentRow] = useState<API.CartVO>();
 
   /**
-   * 删除节点
+   * 删除商品
    *
    * @param row
    */
   const handleDelete = async (row: API.CartVO) => {
-    const hide = message.loading('正在删除');
+    const hide = message.loading('正在删除...');
     if (!row) return true;
     try {
       await deleteCartGoodsUsingPost({
         id: row.id as any,
       });
       hide();
-      message.success('删除成功');
+      message.success('删除成功！');
       actionRef?.current?.reload();
       return true;
     } catch (error: any) {
       hide();
-      message.error('删除失败，' + error.message);
+      message.error('删除失败：' + error.message);
       return false;
     }
   };
@@ -50,33 +49,35 @@ const CartPage: React.FC = () => {
    */
   const columns: ProColumns<API.CartVO>[] = [
     {
-      title: 'id',
-      dataIndex: 'id',
+      title: '商品ID',
+      dataIndex: 'goodsId',
       valueType: 'text',
       hideInForm: true,
     },
     {
-      title: '名称',
+      title: '商品名称',
       dataIndex: 'title',
       valueType: 'text',
+      render: (text) => <Typography.Text strong>{text}</Typography.Text>,
     },
     {
-      title: '描述',
+      title: '商品描述',
       dataIndex: 'content',
       valueType: 'textarea',
+      ellipsis: true,  // 自动省略过长的文本
     },
     {
-      title: '数量',
+      title: '购买数量',
       dataIndex: 'buysNum',
-      valueType: 'text',
+      valueType: 'digit',
     },
     {
       title: '商品单价',
       dataIndex: 'goodsPrice',
-      valueType: 'text',
+      valueType: 'money',  // 显示为货币格式
     },
     {
-      title: '图片',
+      title: '商品图片',
       dataIndex: 'goodsPic',
       valueType: 'image',
       fieldProps: {
@@ -90,36 +91,32 @@ const CartPage: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <Space size="middle">
-          <Typography.Link
-            onClick={() => {
-              setCurrentRow(record);
-              setUpdateModalVisible(true);
-            }}
-          >
+          <Button type="link" onClick={() => { setCurrentRow(record); setIsUpdateModalVisible(true); }}>
             修改
-          </Typography.Link>
-          <Typography.Link type="danger" onClick={() => handleDelete(record)}>
+          </Button>
+          <Button type="link" danger onClick={() => handleDelete(record)}>
             删除
-          </Typography.Link>
+          </Button>
         </Space>
       ),
     },
   ];
 
   return (
-    <div className="goods-admin-page">
-      <Typography.Title level={4} style={{ marginBottom: 16 }}>
-        购物车
+    <div className="cart-admin-page" style={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
+      <Typography.Title level={3} style={{ textAlign: 'center', marginBottom: 24 }}>
+        购物车管理
       </Typography.Title>
       <ProTable<API.CartVO>
-        headerTitle={'查询表格'}
+        headerTitle="购物车列表"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}
-        toolBarRender={() => [
-        ]}
+        pagination={{
+          pageSize: 10, // 每页显示条数
+        }}
         request={async (params, sort, filter) => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
@@ -138,18 +135,21 @@ const CartPage: React.FC = () => {
           };
         }}
         columns={columns}
+        rowClassName={(record, index) =>
+          index % 2 === 0 ? 'table-row-light' : 'table-row-dark' // 条纹效果
+        }
       />
       <UpdateModal
-        visible={updateModalVisible}
+        visible={isUpdateModalVisible}
         columns={columns}
         oldData={currentRow}
         onSubmit={() => {
-          setUpdateModalVisible(false);
+          setIsUpdateModalVisible(false);
           setCurrentRow(undefined);
           actionRef.current?.reload();
         }}
         onCancel={() => {
-          setUpdateModalVisible(false);
+          setIsUpdateModalVisible(false);
         }}
       />
     </div>
