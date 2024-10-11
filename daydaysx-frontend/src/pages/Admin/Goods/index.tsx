@@ -1,4 +1,5 @@
-
+import CreateModal from '@/pages/Admin/Goods/components/CreateModal';
+import UpdateModal from '@/pages/Admin/Goods/components/UpdateModal';
 import {
   deleteGoodsUsingPost,
   listGoodsByPageUsingPost,
@@ -11,7 +12,7 @@ import { Button, message, Select, Space, Tag, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 
 /**
- * 代码生成器管理页面
+ * 商品管理页面
  *
  * @constructor
  */
@@ -170,6 +171,7 @@ const GoodsAdminPage: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
+              console.log("新建")
               setCreateModalVisible(true);
             }}
           >
@@ -194,6 +196,30 @@ const GoodsAdminPage: React.FC = () => {
           };
         }}
         columns={columns}
+      />
+      <CreateModal
+        visible={createModalVisible}
+        columns={columns}
+        onSubmit={() => {
+          setCreateModalVisible(false);
+          actionRef.current?.reload();
+        }}
+        onCancel={() => {
+          setCreateModalVisible(false);
+        }}
+      />
+      <UpdateModal
+        visible={updateModalVisible}
+        columns={columns}
+        oldData={currentRow}
+        onSubmit={() => {
+          setUpdateModalVisible(false);
+          setCurrentRow(undefined);
+          actionRef.current?.reload();
+        }}
+        onCancel={() => {
+          setUpdateModalVisible(false);
+        }}
       />
     </div>
   );

@@ -8,7 +8,7 @@ export default [
       { path: '/user/register', component: './User/Register' },
     ],
   },
-  { path: '/index', icon: 'smile', component: './index/index', name: '主页' },
+  { path: '/', icon: 'smile', component: './index/index', name: '主页' },
   {
     path: '/admin',
     icon: 'crown',
@@ -20,15 +20,9 @@ export default [
       { icon: 'tools', path: '/admin/goods', component: './Admin/Goods', name: "商品管理" },
     ],
   },
-  { path: '/welcome', icon: 'smile', component: './Welcome', name: '欢迎页' },
   { path: '/cart', icon: 'ShoppingCartOutlined', component: './cart/cart', name: '购物车' },
+  { path: '/order', icon: 'ShoppingCartOutlined', component: './Order/index', name: '订单' },
   { path: '/about', icon: 'ShoppingCartOutlined', component: './Our/about', name: '关于我们' },
-  {
-    path: '/Goods/add',
-    icon: 'plus',
-    component: './Goods/Add',
-    name: '商品添加',
-  },
   {
     path: '/Goods/detail/:id',
     icon: 'home',
@@ -36,9 +30,20 @@ export default [
     name: '商品详情',
     hideInMenu: true,
   },
+  {
+    path: '/goods/Use/:id',
+    icon: 'home',
+    component: './Goods/Use',
+    name: '下单界面',
+    hideInMenu: true,
+  },
+  {
+    path: '/Order/detail/:id',
+    icon: 'home',
+    component: './Order/Detail',
+    name: '订单详细界面',
+    hideInMenu: true,
+  },
 
-
-
-  { path: '/', redirect: '/welcome' },
   { path: '*', layout: false, component: './404' },
 ];

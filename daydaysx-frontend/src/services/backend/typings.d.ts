@@ -99,6 +99,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getGoodsVOByIdUsingGET1Params = {
+    /** id */
+    id?: number;
+  };
+
   type getGoodsVOByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -173,13 +178,15 @@ declare namespace API {
   };
 
   type GoodsOrderVO = {
+    arrivePlace?: string;
     createTime?: string;
     goodsId?: number;
     goodsNum?: number;
     goodsVO?: GoodsVO;
     id?: number;
-    place?: string;
+    orderPrice?: number;
     placeStatus?: number;
+    startPlace?: string;
     updateTime?: string;
     userId?: number;
   };

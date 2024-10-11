@@ -159,7 +159,7 @@ const IndexPage: React.FC = () => {
         }}
         renderItem={(data) => (
           <List.Item>
-            <Link to={`/generator/detail/${data.id}`}>
+            <Link to={`/goods/detail/${data.id}`}>
               <Card hoverable cover={<Image alt={data.title} src={data.goodsPic} />}>
                 <Card.Meta
                   title={<a>{data.title}</a>}

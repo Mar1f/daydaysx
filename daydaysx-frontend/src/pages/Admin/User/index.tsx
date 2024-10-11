@@ -142,6 +142,7 @@ const UserAdminPage: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
+              console.log("新建")
               setCreateModalVisible(true);
             }}
           >
