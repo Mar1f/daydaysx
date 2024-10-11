@@ -47,14 +47,36 @@ public class GoodsOrderController {
      * @param request
      * @return 提交记录的 id
      */
-    @PostMapping("/")
+    @PostMapping("/add")
     public BaseResponse<Long> doGoodsOrder(@RequestBody GoodsOrderAddRequest goodsOrderAddRequest,
                                                HttpServletRequest request) {
+        // 1. 检查请求参数是否合法
         if (goodsOrderAddRequest == null || goodsOrderAddRequest.getGoodsId() <= 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品 ID 无效");
         }
+
+        // 2. 检查商品数量是否有效
+        Integer goodsNum = goodsOrderAddRequest.getGoodsNum();
+        if (goodsNum == null || goodsNum <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品数量无效");
+        }
+
         // 登录才能下单
         final User loginUser = userService.getLoginUser(request);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR, "请先登录");
+        }
+        // 3. 获取商品详情，检查商品是否存在
+        Long goodsId = goodsOrderAddRequest.getGoodsId();
+        Goods goods = goodsService.getById(goodsId);
+        if (goods == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品不存在");
+        } // 5. 检查商品库存是否足够
+        if (goods.getGoodsNum() < goodsNum) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品库存不足");
+        }
+
+
         long goodsOrderId = goodsOrderService.doGoodsOrder(goodsOrderAddRequest, loginUser);
         return ResultUtils.success(goodsOrderId);
     }

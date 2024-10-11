@@ -2,12 +2,12 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** doGoodsOrder POST /api/goods_order/ */
+/** doGoodsOrder POST /api/goods_order/add */
 export async function doGoodsOrderUsingPost(
   body: API.GoodsOrderAddRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseLong_>('/api/goods_order/', {
+  return request<API.BaseResponseLong_>('/api/goods_order/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

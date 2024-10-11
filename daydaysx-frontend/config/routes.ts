@@ -31,13 +31,6 @@ export default [
     hideInMenu: true,
   },
   {
-    path: '/goods/Use/:id',
-    icon: 'home',
-    component: './Goods/Use',
-    name: '下单界面',
-    hideInMenu: true,
-  },
-  {
     path: '/Order/detail/:id',
     icon: 'home',
     component: './Order/Detail',

@@ -3,18 +3,19 @@ import {
   getGoodsVoByIdUsingGet,
 } from '@/services/backend/goodsController';
 import { Link, useModel, useParams } from '@@/exports';
-import {DownloadOutlined, EditOutlined, ShoppingCartOutlined} from '@ant-design/icons';
+import { PlusOutlined, ShoppingCartOutlined} from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Image, message, Row, Space, Tabs, Tag, Typography } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import {doGoodsOrderUsingPost} from "@/services/backend/goodsOrderController";
+import CreateModal from "@/pages/Goods/Detail/components/CreateModal";
 
 /**
  * 生成器详情页
  * @constructor
  */
-const GoodsDetailPage: React.FC = () => {
+const GoodsOrderDetailPage: React.FC = () => {
   const { id } = useParams();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,6 +23,8 @@ const GoodsDetailPage: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState ?? {};
   const my = currentUser?.id === data?.userId;
+  // 是否显示新建窗口
+  const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
 
   /**
    * 加载数据
@@ -69,11 +72,22 @@ const GoodsDetailPage: React.FC = () => {
    * 加入购物车按钮
    */
   const editButton = my && (
-    <Link to={`/goods/update?id=${data.id}`}>
+    <Link to={`/`}>
       <Button icon={<ShoppingCartOutlined />}>加入购物车</Button>
     </Link>
   );
-
+  // 创建订单
+  const handleOrderSubmit = async (values: API.GoodsOrderVO) => {
+    try {
+      await doGoodsOrderUsingPost({
+        ...values,
+        goodsId: id,  // 将商品 ID 传递给后端
+      });
+      message.success('订单创建成功');
+    } catch (error: any) {
+      message.error('订单创建失败，' + error.message);
+    }
+  };
   return (
     <PageContainer title={<></>} loading={loading}>
       <Card>
@@ -92,10 +106,29 @@ const GoodsDetailPage: React.FC = () => {
             <Typography.Paragraph type="secondary">库存：{data.goodsNum}</Typography.Paragraph>
             <div style={{ marginBottom: 24 }} />
             <Space size="middle">
-              <Link to={`/goods/use/${data.id}`}>
-                <Button type="primary">立刻下单</Button>
-              </Link>
+              <Button
+                type="primary"
+                key="primary"
+                onClick={() => {
+                  console.log("下单")
+                  setCreateModalVisible(true);
+                }}
+              >
+                <PlusOutlined /> 立即下单
+              </Button>,
               {editButton}
+              <CreateModal
+                visible={createModalVisible}
+                goodsId={data.id} // 将商品ID传递到弹窗
+                onSubmit={(values) => {
+                  setCreateModalVisible(false);
+                  // 提交表单值，包括商品ID
+                  console.log(values);
+                }}
+                onCancel={() => {
+                  setCreateModalVisible(false);
+                }}
+              />
             </Space>
           </Col>
           <Col flex="320px">
@@ -122,4 +155,4 @@ const GoodsDetailPage: React.FC = () => {
   );
 };
 
-export default GoodsDetailPage;
+export default GoodsOrderDetailPage;
