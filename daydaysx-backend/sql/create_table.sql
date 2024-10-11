@@ -61,3 +61,22 @@ create table if not exists goods_order
 ) comment '订单';
 
 
+-- 购物车表
+CREATE TABLE IF NOT EXISTS shopping_cart (
+     id          BIGINT AUTO_INCREMENT COMMENT 'id' PRIMARY KEY,
+     userId      BIGINT NOT NULL COMMENT '用户id',
+     goodsId     BIGINT NOT NULL COMMENT '商品id',
+     content    text                               null comment '介绍',
+     goodsPic   varchar(1024)                      null comment '商品照片',
+     tags       varchar(1024)                      null comment '标签列表（json 数组）',
+     price     decimal(10, 2) default 0.00        not null comment '价格',
+     quantity     INT DEFAULT 1 NOT NULL COMMENT '购买数量',
+     createTime  DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
+     updateTime  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+     isDelete    TINYINT DEFAULT 0 NOT NULL COMMENT '是否删除',
+     INDEX idx_userId (userId),
+     INDEX idx_goodsId (goodsId),
+     FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
+     FOREIGN KEY (goodsId) REFERENCES goods(id) ON DELETE CASCADE
+) COMMENT '购物车' COLLATE = utf8mb4_unicode_ci;
+
