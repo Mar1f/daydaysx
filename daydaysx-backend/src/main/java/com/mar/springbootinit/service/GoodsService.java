@@ -32,7 +32,7 @@ public interface GoodsService extends IService<Goods> {
      */
     QueryWrapper<Goods> getQueryWrapper(GoodsQueryRequest goodsQueryRequest);
     /**
-     * 获取帖子封装
+     * 获取商品封装
      *
      * @param goods
      * @param request
@@ -41,7 +41,7 @@ public interface GoodsService extends IService<Goods> {
     GoodsVO getGoodsVO(Goods goods, HttpServletRequest request);
 
     /**
-     * 分页获取帖子封装
+     * 分页获取商品封装
      *
      * @param goodsPage
      * @param request

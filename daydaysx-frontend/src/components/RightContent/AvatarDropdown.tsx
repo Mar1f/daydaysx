@@ -46,6 +46,10 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu=true }) 
         loginOut();
         return;
       }
+      if (key === 'cart') {
+        history.push('/cart'); // 跳转到购物车页面
+        return;
+      }
       history.push(`/account/${key}`);
     },
     [setInitialState],

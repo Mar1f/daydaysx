@@ -8,8 +8,11 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Image, message, Row, Space, Tabs, Tag, Typography } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+
+import { doCartUsingPost } from "@/services/backend/cartController";
 import {doGoodsOrderUsingPost} from "@/services/backend/goodsOrderController";
 import CreateModal from "@/pages/Goods/Detail/components/CreateModal";
+import AddToCartModal from "@/pages/Goods/Detail/components/AddToCartModal";// 导入新的弹窗组件
 
 /**
  * 生成器详情页
@@ -25,6 +28,7 @@ const GoodsOrderDetailPage: React.FC = () => {
   const my = currentUser?.id === data?.userId;
   // 是否显示新建窗口
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
+  const [addToCartModalVisible, setAddToCartModalVisible] = useState<boolean>(false); // 新的弹窗状态
 
   /**
    * 加载数据
@@ -67,15 +71,19 @@ const GoodsOrderDetailPage: React.FC = () => {
     );
   };
 
+  // 添加到购物车的逻辑
+  const handleAddToCartSubmit = async (values: API.CartVO) => {
+    try {
+      await doCartUsingPost({
+        ...values,
+        goodsId: id,
+      });
+      message.success('商品已成功加入购物车');
+    } catch (error: any) {
+      message.error('加入购物车失败，' + error.message);
+    }
+  };
 
-  /**
-   * 加入购物车按钮
-   */
-  const editButton = my && (
-    <Link to={`/`}>
-      <Button icon={<ShoppingCartOutlined />}>加入购物车</Button>
-    </Link>
-  );
   // 创建订单
   const handleOrderSubmit = async (values: API.GoodsOrderVO) => {
     try {
@@ -116,7 +124,16 @@ const GoodsOrderDetailPage: React.FC = () => {
               >
                 <PlusOutlined /> 立即下单
               </Button>,
-              {editButton}
+              <Button
+                icon={<ShoppingCartOutlined />}
+                type="primary"
+                key="primary"
+                onClick={() => {
+                  setAddToCartModalVisible(true); // 打开加入购物车的弹窗
+                }}
+              >
+                加入购物车
+              </Button>
               <CreateModal
                 visible={createModalVisible}
                 goodsId={data.id} // 将商品ID传递到弹窗
@@ -127,6 +144,18 @@ const GoodsOrderDetailPage: React.FC = () => {
                 }}
                 onCancel={() => {
                   setCreateModalVisible(false);
+                }}
+              />
+              <AddToCartModal // 新的加入购物车弹窗
+                visible={addToCartModalVisible}
+                goodsId={data.id}
+                onSubmit={(values) => {
+                  setAddToCartModalVisible(false);
+                  // 提交表单值，包括商品ID
+                  console.log(values);
+                }}
+                onCancel={() => {
+                  setAddToCartModalVisible(false);
                 }}
               />
             </Space>

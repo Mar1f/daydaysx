@@ -1,7 +1,7 @@
 import UpdateModal from '@/pages/cart/Detail/components/UpdateModal';
 import {
   deleteCartGoodsUsingPost,
-  listCartVoByPageFastUsingPost
+  listCartVoByPageUsingPost
 } from '@/services/backend/cartController';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
@@ -67,7 +67,7 @@ const CartPage: React.FC = () => {
       ellipsis: true,  // 自动省略过长的文本
     },
     {
-      title: '购买数量',
+      title: '数量',
       dataIndex: 'buysNum',
       valueType: 'digit',
     },
@@ -121,7 +121,7 @@ const CartPage: React.FC = () => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
 
-          const { data, code } = await listCartVoByPageFastUsingPost({
+          const { data, code } = await listCartVoByPageUsingPost({
             ...params,
             sortField,
             sortOrder,

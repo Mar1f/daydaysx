@@ -59,6 +59,21 @@ export async function listCartByPageUsingPost(
   });
 }
 
+/** listCartVOByPage POST /api/cart/list/page/vo */
+export async function listCartVoByPageUsingPost(
+  body: API.CartQueryRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponsePageCartVO_>('/api/cart/list/page/vo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** listCartVOByPageFast POST /api/cart/list/page/vo/fast */
 export async function listCartVoByPageFastUsingPost(
   body: API.CartQueryRequest,

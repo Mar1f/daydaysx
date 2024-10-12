@@ -74,7 +74,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
         if(price == null || price.compareTo(BigDecimal.ZERO) < 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "价格不能为空");
         }
-        if (goodsNum == null || goodsNum < 0) {
+        if (goodsNum == null || goodsNum <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品数量不能为空");
         }
     }
@@ -88,14 +88,25 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
     @Override
     public long doCart(CartAddRequest cartAddRequest, User loginUser) {
         long goodsId = cartAddRequest.getGoodsId();
-        // 判断是否存在
+        long userId = loginUser.getId();
+
+        // 判断商品是否存在
         Goods goods = goodsService.getById(goodsId);
         if (goods == null) {
-            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "商品未找到");
         }
-        // 是否已已下单
-        long userId = loginUser.getId();
-        // 每个用户串行订单
+
+        // 检查购物车中是否已经存在该商品
+        QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId", userId);
+        queryWrapper.eq("goodsId", goodsId);
+        queryWrapper.eq("isDelete", false);  // 确保查询未被删除的记录
+        Cart existingCart = this.getOne(queryWrapper);
+        if (existingCart != null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "购物车中已存在该商品，不能重复添加");
+        }
+
+        // 添加商品到购物车
         Cart cart = new Cart();
         cart.setUserId(userId);
         cart.setGoodsId(goodsId);
@@ -105,17 +116,23 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart>
         cart.setTags(goods.getTags());
         cart.setGoodsPrice(goods.getPrice());
         cart.setBuysNum(cartAddRequest.getBuysNum());
+
         BigDecimal goodsNum = BigDecimal.valueOf(cartAddRequest.getBuysNum());
         BigDecimal price = goods.getPrice();
         BigDecimal totalPrice = goodsNum.multiply(price);
-// 设置订单价格
+
+        // 设置订单价格
         cart.setPrice(totalPrice);
+
+        // 保存到数据库
         boolean save = this.save(cart);
-        if(!save ){
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"订单下单失败");
+        if (!save) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "订单下单失败");
         }
+
         return cart.getGoodsId();
     }
+
 
 
     /**

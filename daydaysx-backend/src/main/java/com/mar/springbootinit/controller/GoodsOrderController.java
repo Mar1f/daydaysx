@@ -75,7 +75,18 @@ public class GoodsOrderController {
         if (goods.getGoodsNum() < goodsNum) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品库存不足");
         }
+        if (goods == null || goods.getGoodsNum() < goodsNum) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品不存在或库存不足");
+        }
 
+        // 4. 减少库存
+        goods.setGoodsNum( goods.getGoodsNum() - goodsNum);
+
+        // 5. 更新库存到数据库
+        boolean updateSuccess = goodsService.updateById(goods);
+        if (!updateSuccess) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "更新库存失败");
+        }
 
         long goodsOrderId = goodsOrderService.doGoodsOrder(goodsOrderAddRequest, loginUser);
         return ResultUtils.success(goodsOrderId);

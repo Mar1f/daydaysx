@@ -55,7 +55,7 @@ public class CartController {
     @Resource
     private CacheManager cacheManager;
     /**
-     * 提交订单
+     * 加入购物车
      *
      * @param cartAddRequest
      * @param request
@@ -63,37 +63,71 @@ public class CartController {
      */
     @PostMapping("/add")
     public BaseResponse<Long> doCart(@RequestBody CartAddRequest cartAddRequest,
-                                               HttpServletRequest request) {
+                                     HttpServletRequest request) {
         // 1. 检查请求参数是否合法
         if (cartAddRequest == null || cartAddRequest.getGoodsId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品 ID 无效");
         }
 
-        // 2. 检查商品数量是否有效
-        Integer BuysNum = cartAddRequest.getBuysNum();
-        if (BuysNum == null || BuysNum <= 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品数量无效");
+        // 2. 检查商品数量是否有效，且不能为 0
+        Integer buysNum = cartAddRequest.getBuysNum();
+        if (buysNum == null || buysNum <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品数量无效，不能为 0 或更小");
         }
 
-        // 登录才能下单
+        // 3. 登录才能添加商品到购物车
         final User loginUser = userService.getLoginUser(request);
         if (loginUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR, "请先登录");
         }
-        // 3. 获取商品详情，检查商品是否存在
+
+        // 4. 获取商品详情，检查商品是否存在
         Long goodsId = cartAddRequest.getGoodsId();
         Goods goods = goodsService.getById(goodsId);
         if (goods == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品不存在");
-        } // 5. 检查商品库存是否足够
-        if (goods.getGoodsNum() < BuysNum) {
+        }
+
+        // 5. 检查商品库存是否足够
+        if (goods.getGoodsNum() < buysNum) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品库存不足");
         }
 
+        // 6. 检查购物车中是否已存在该商品
+        CartQueryRequest cartQueryRequest = new CartQueryRequest();
+        cartQueryRequest.setGoodsId(goodsId);
+        cartQueryRequest.setUserId(loginUser.getId());
+        QueryWrapper<Cart> queryWrapper = cartService.getQueryWrapper(cartQueryRequest);
+        List<Cart> existingCarts = cartService.list(queryWrapper);
 
+        if (existingCarts != null && !existingCarts.isEmpty()) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "购物车中已存在该商品，不能重复添加");
+        }
+
+        // 7. 添加商品到购物车
         long cartId = cartService.doCart(cartAddRequest, loginUser);
         return ResultUtils.success(cartId);
     }
+    /**
+     * 分页获取列表（封装类）
+     *
+     * @param cartQueryRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/list/page/vo")
+    public BaseResponse<Page<CartVO>> listCartVOByPage(@RequestBody CartQueryRequest cartQueryRequest,
+                                                         HttpServletRequest request) {
+        long current = cartQueryRequest.getCurrent();
+        long size = cartQueryRequest.getPageSize();
+        // 限制爬虫
+        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        Page<Cart> cartPage = cartService.page(new Page<>(current, size),
+                cartService.getQueryWrapper(cartQueryRequest));
+        final User loginUser = userService.getLoginUser(request);
+        return ResultUtils.success(cartService.getCartVOPage(cartPage, loginUser));
+    }
+
     /**
      * 获取分页缓存 keu
      *
