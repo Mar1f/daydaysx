@@ -15,7 +15,7 @@ public enum GoodsOrderStatusEnum {
     WAITING("未发货", 0),
     RUNNING("配送中", 1),
     SUCCEED("已送达", 2),
-    FAILED("退货中", 3);
+    FAILED("未付款", 3);
 
     private final String text;
 

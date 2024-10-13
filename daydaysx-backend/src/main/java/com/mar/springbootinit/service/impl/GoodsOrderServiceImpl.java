@@ -74,7 +74,7 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         BigDecimal totalPrice = goodsNum.multiply(price);
 // 设置订单价格
         goodsOrder.setOrderPrice(totalPrice);
-        goodsOrder.setPlaceStatus(GoodsOrderStatusEnum.WAITING.getValue());
+        goodsOrder.setPlaceStatus(GoodsOrderStatusEnum.FAILED.getValue());
         boolean save = this.save(goodsOrder);
         if(!save ){
             throw new BusinessException(ErrorCode.SYSTEM_ERROR,"订单下单失败");
