@@ -51,4 +51,5 @@ public interface GoodsOrderService extends IService<GoodsOrder> {
      * @return
      */
     Page<GoodsOrderVO> getGoodsOrderVOPage(Page<GoodsOrder> goodsOrderPage, User loginUser);
+
 }

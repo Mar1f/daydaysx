@@ -59,14 +59,14 @@ const GoodsAdminPage: React.FC = () => {
       valueType: 'text',
     },
     {
-      title: '快递状态',
+      title: '状态',
       dataIndex: 'placeStatus',
       valueType: 'text',
       valueEnum: {
-        0: { text: '未发货', status: 'Default' }, // 对应 WAITING
-        1: { text: '配送中', status: 'Processing' }, // 对应 RUNNING
-        2: { text: '已送达', status: 'Success' }, // 对应 SUCCEED
-        3: { text: '退货中', status: 'Error' }, // 对应 FAILED
+        0: { text: '未付款', status: 'Error' }, // 对应 FAILED
+        1: { text: '未发货', status: 'Default' }, // 对应 WAITING
+        2: { text: '配送中', status: 'Processing' }, // 对应 RUNNING
+        3: { text: '已送达', status: 'Success' }, // 对应 SUCCEED
       },
     },
     {

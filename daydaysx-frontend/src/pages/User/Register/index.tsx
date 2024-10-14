@@ -22,7 +22,7 @@ const UserRegisterPage: React.FC = () => {
       height: '100vh',
       overflow: 'auto',
       backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
+        "url('https://marone-1326817243.cos.ap-beijing.myqcloud.com/test%2Fimg_1.png')", // 背景图片不变
       backgroundSize: '100% 100%',
     };
   });
@@ -67,16 +67,41 @@ const UserRegisterPage: React.FC = () => {
         style={{
           flex: '1',
           padding: '32px 0',
+          marginTop: '50px',
+          display: 'flex',
+          justifyContent: 'space-between', // 使子元素等间距排列
+          alignItems: 'flex-start',
         }}
       >
+        {/* 第一部分 */}
+        <div style={{ flexBasis: '16.67%' }}></div>
+        {/* 第二部分：登录框放置在这里 */}
+        <div
+          style={{
+            flexBasis: '16.67%',
+            display: 'flex',
+            justifyContent: 'center', // 确保登录框在第二部分居中对齐
+          }}
+        >
         <LoginForm
           contentStyle={{
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" style={{ height: '100%' }} src="/logo.svg" />}
-          title=" 注册"
-          subTitle={'高效招聘、爽快求职'}
+          logo={
+            <img
+              alt="logo"
+              style={{
+                height: '100px',
+                width: '220px',
+                display: 'block',
+                marginLeft: '-80px', // 确保 logo 左对齐
+                marginTop:'-20px',
+                alignSelf: 'flex-start',
+              }}
+              src="/logo.png"
+            />
+          }
           initialValues={{
             autoLogin: true,
           }}
@@ -92,6 +117,10 @@ const UserRegisterPage: React.FC = () => {
           <Tabs
             activeKey={type}
             onChange={setType}
+            style={{
+              marginTop:'50px',
+              padding:'15px'
+            }}
             centered
             items={[
               {
@@ -153,9 +182,12 @@ const UserRegisterPage: React.FC = () => {
               textAlign: 'right',
             }}
           >
-            <Link to="/user/login">老用户登录</Link>
+            <Link to="/user/login" style={{ color: '#D97706' }}>老用户登录</Link>
           </div>
         </LoginForm>
+      </div>
+        {/* 第三到第六部分 */}
+        <div style={{ flexBasis: '66.66%' }}></div>
       </div>
       <Footer />
     </div>

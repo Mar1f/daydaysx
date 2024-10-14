@@ -5,6 +5,7 @@ import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { AvatarDropdown } from './components/RightContent/AvatarDropdown';
 import { requestConfig } from './requestConfig';
+import logo from "@/assets/logo.png";
 
 const loginPath = '/user/login';
 
@@ -40,14 +41,15 @@ export async function getInitialState(): Promise<InitialState> {
 // @ts-ignore
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
+    logo,
     avatarProps: {
       render: () => {
         return <AvatarDropdown />;
       },
     },
-    waterMarkProps: {
-      content: initialState?.currentUser?.userName,
-    },
+    // waterMarkProps: {
+    //   content: initialState?.currentUser,
+    // },
     footerRender: () => <Footer />,
     menuHeaderRender: undefined,
     // 自定义 403 页面

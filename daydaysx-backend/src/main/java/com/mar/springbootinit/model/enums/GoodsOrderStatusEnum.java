@@ -12,10 +12,11 @@ import java.util.stream.Collectors;
  */
 public enum GoodsOrderStatusEnum {
 
-    WAITING("未发货", 0),
-    RUNNING("配送中", 1),
-    SUCCEED("已送达", 2),
-    FAILED("未付款", 3);
+    FAILED("未付款", 0),
+    WAITING("未发货", 1),
+    RUNNING("配送中", 2),
+    SUCCEED("已送达", 3);
+
 
     private final String text;
 

@@ -1,8 +1,6 @@
 package com.mar.springbootinit.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mar.springbootinit.common.ErrorCode;
@@ -79,7 +77,8 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         if(!save ){
             throw new BusinessException(ErrorCode.SYSTEM_ERROR,"订单下单失败");
         }
-        return goodsOrder.getGoodsId();
+        System.out.println("订单id"+goodsOrder.getId());
+        return goodsOrder.getId();
     }
 
 

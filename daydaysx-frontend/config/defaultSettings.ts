@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '天天生鲜',
+  title: '',
   pwa: true,
   iconfontUrl: '',
   token: {

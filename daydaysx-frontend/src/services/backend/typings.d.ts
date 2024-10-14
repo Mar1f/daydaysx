@@ -401,6 +401,11 @@ declare namespace API {
     total?: number;
   };
 
+  type payUsingGETParams = {
+    /** id */
+    id?: string;
+  };
+
   type Post = {
     content?: string;
     createTime?: string;

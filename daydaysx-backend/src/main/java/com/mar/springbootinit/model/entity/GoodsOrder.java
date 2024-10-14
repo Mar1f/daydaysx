@@ -21,6 +21,10 @@ public class GoodsOrder implements Serializable {
     private Long id;
 
     /**
+     * 支付宝交易id
+     */
+    private String alipay_trade_no;
+    /**
      * 商品 id
      */
     private Long goodsId;
@@ -64,6 +68,10 @@ public class GoodsOrder implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 支付时间
+     */
+    private Date payTime;
     /**
      * 是否删除
      */

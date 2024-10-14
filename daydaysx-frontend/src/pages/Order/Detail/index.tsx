@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import {doGoodsOrderUsingPost} from "@/services/backend/goodsOrderController";
 
 /**
- * 生成器详情页
+ * 订单详情页
  * @constructor
  */
 const GoodsDetailPage: React.FC = () => {

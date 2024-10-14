@@ -89,6 +89,7 @@ public class GoodsOrderController {
         }
 
         long goodsOrderId = goodsOrderService.doGoodsOrder(goodsOrderAddRequest, loginUser);
+        System.out.println("goodsOrderId = " + goodsOrderId);
         return ResultUtils.success(goodsOrderId);
     }
 

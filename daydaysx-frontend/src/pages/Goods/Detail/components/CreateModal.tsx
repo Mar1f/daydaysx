@@ -1,7 +1,8 @@
 import { doGoodsOrderUsingPost } from '@/services/backend/goodsOrderController';
-import { ProColumns, ProTable } from '@ant-design/pro-components';
+import { payUsingGet } from '@/services/backend/aliPayController';
 import { message, Modal } from 'antd';
 import React from 'react';
+import { ProTable } from '@ant-design/pro-components';
 
 interface Props {
   visible: boolean;
@@ -15,18 +16,32 @@ interface Props {
  * @param fields
  */
 const handleAdd = async (fields: API.GoodsOrderVO) => {
-  const hide = message.loading('正在添加');
+  const hide = message.loading('正在添加订单...');
   try {
-    await doGoodsOrderUsingPost(fields);
+    // Step 1: 创建订单并获取响应结果
+    const result = await doGoodsOrderUsingPost(fields);
     hide();
-    message.success('订单创建成功');
-    return true;
+
+    if (result?.code === 0 && result?.data) {
+      const orderId = result.data; // 订单 ID
+      message.success('订单创建成功');
+
+      // Step 2: 调用支付宝支付接口
+      const paymentUrl = `http://localhost:8101/api/aliPay/pay?id=${orderId}`;
+
+      // Step 3: 直接打开支付页面
+      window.open(paymentUrl);
+      return true;
+    } else {
+      throw new Error('订单创建失败');
+    }
   } catch (error: any) {
     hide();
     message.error('订单创建失败，' + error.message);
     return false;
   }
 };
+
 
 /**
  * 创建订单弹窗
@@ -53,7 +68,7 @@ const CreateModal: React.FC<Props> = (props) => {
             title: '商品ID',
             dataIndex: 'goodsId',
             valueType: 'text',
-            initialValue: goodsId, // 设置商品ID为默认值
+            initialValue: goodsId, // 设置商品 ID 为默认值
             hideInForm: true, // 在表单中隐藏此字段
           },
           {
@@ -84,7 +99,7 @@ const CreateModal: React.FC<Props> = (props) => {
           },
         ]}
         onSubmit={async (values: API.GoodsOrderVO) => {
-          // 提交表单时包含商品ID
+          // 提交表单时包含商品 ID
           const formValues = { ...values, goodsId };
           const success = await handleAdd(formValues);
           if (success) {

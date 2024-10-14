@@ -46,6 +46,7 @@ create table if not exists goods
 create table if not exists goods_order
 (
     id         bigint auto_increment comment 'id' primary key,
+    alipay_trade_no varchar(256)                       null comment '支付宝交易号',
     goodsId     bigint                             not null comment '商品 id',
     userId    bigint                             not null comment '买家的id',
     goodsNum   int      default 0                 not null comment '购买数量',
@@ -54,6 +55,7 @@ create table if not exists goods_order
     ArrivePlace     varchar(256)                       null comment '收货地址',
     placeStatus  int      default 0                 not null comment '订单状态 0-待发货，1-配送中 2-已送达 3-退货中',
     createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    payTime datetime default CURRENT_TIMESTAMP not null comment '支付时间',
     updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     isDelete   tinyint  default 0                 not null comment '是否删除',
     index idx_goodsId (goodsId),
