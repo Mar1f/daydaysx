@@ -1,4 +1,4 @@
-import { userLogoutUsingPost } from '@/services/backend/userController';
+import { userLogoutUsingPost,getLoginUserUsingGet} from '@/services/backend/userController';
 import { ShoppingCartOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
 import { Avatar, Button, Space } from 'antd';
@@ -36,6 +36,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu=true }) 
 
   const { initialState, setInitialState } = useModel('@@initialState');
 
+  const { currentUser } = initialState || {};
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
       const { key } = event;
@@ -50,12 +51,15 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu=true }) 
         history.push('/cart'); // 跳转到购物车页面
         return;
       }
+      if (key === 'center') {
+        history.push(`/User/detail/${currentUser.id}`);
+        return;
+      }
       history.push(`/account/${key}`);
     },
     [setInitialState],
   );
 
-  const { currentUser } = initialState || {};
 
   if (!currentUser) {
     return (
@@ -79,11 +83,6 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu=true }) 
             key: 'cart',
             icon: <ShoppingCartOutlined />,
             label: '购物车',
-          },
-          {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: '个人设置',
           },
           {
             type: 'divider' as const,

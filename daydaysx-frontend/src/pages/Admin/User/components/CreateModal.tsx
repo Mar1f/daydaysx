@@ -1,63 +1,72 @@
+import { Modal } from 'antd';
+import {
+  ProForm,
+  ProFormSelect,
+  ProFormText,
+  ProFormTextArea,
+  ProFormItem,
+} from '@ant-design/pro-components';
+import PictureUploader from '@/components/PictureUploader';
 import { addUserUsingPost } from '@/services/backend/userController';
-import { ProColumns, ProTable } from '@ant-design/pro-components';
-import '@umijs/max';
-import { message, Modal } from 'antd';
-import React from 'react';
+import { useRef } from 'react';
+import type { ProFormInstance } from '@ant-design/pro-components';
+import { message } from 'antd';
 
-interface Props {
+interface CreateModalProps {
   visible: boolean;
-  columns: ProColumns<API.User>[];
-  onSubmit: (values: API.UserAddRequest) => void;
+  columns: any;
+  onSubmit: () => void;
   onCancel: () => void;
 }
 
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.UserAddRequest) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addUserUsingPost(fields);
-    hide();
-    message.success('创建成功');
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error('创建失败，' + error.message);
-    return false;
-  }
-};
+const CreateModal: React.FC<CreateModalProps> = ({ visible, onSubmit, onCancel }) => {
+  const formRef = useRef<ProFormInstance>();
 
-/**
- * 创建弹窗
- * @param props
- * @constructor
- */
-const CreateModal: React.FC<Props> = (props) => {
-  const { visible, columns, onSubmit, onCancel } = props;
+  /**
+   * 创建用户
+   */
+  const handleCreate = async (values: any) => {
+    try {
+      const res = await addUserUsingPost(values);
+      if (res.data) {
+        message.success('创建成功');
+        onSubmit();
+      }
+    } catch (error: any) {
+      message.error('创建失败，' + error.message);
+    }
+  };
 
   return (
     <Modal
-      destroyOnClose
-      title={'创建'}
-      open={visible}
+      visible={visible}
+      title="新建商品"
+      onCancel={onCancel}
       footer={null}
-      onCancel={() => {
-        onCancel?.();
-      }}
+      destroyOnClose
     >
-      <ProTable
-        type="form"
-        columns={columns}
-        onSubmit={async (values: API.UserAddRequest) => {
-          const success = await handleAdd(values);
-          if (success) {
-            onSubmit?.(values);
-          }
+      <ProForm
+        formRef={formRef}
+        onFinish={handleCreate}
+        submitter={{
+          searchConfig: {
+            submitText: '提交',
+            resetText: '重置',
+          },
         }}
-      />
+      >
+        <ProFormText name="userAccount" label="账号" placeholder="请输入账号" rules={[{ required: true }]} />
+        <ProFormTextArea name="userName" label="名字" placeholder="请输入名字" />
+        <ProFormText name="userPassword" label="密码" placeholder="请输入密码" />
+        <ProFormText name="userProfile" label="个性签名" placeholder="请输入个性签名" />
+        <ProFormText name="userPlace" label="所在地" placeholder="请输入所在地" />
+        {/* 图片上传 */}
+        <ProFormItem label="图片" name="userAvatar">
+          <PictureUploader biz="user_picture" />
+        </ProFormItem>
+      </ProForm>
     </Modal>
   );
 };
+
 export default CreateModal;

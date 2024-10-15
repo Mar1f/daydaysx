@@ -40,7 +40,10 @@ public class GoodsOrderVO implements Serializable {
      * 购买数量
      */
     private Integer goodsNum;
-
+    /**
+     * 商品名字
+     */
+    private String title;
     /**
      * 发货地址
      */
@@ -68,6 +71,10 @@ public class GoodsOrderVO implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+    /**
+     * 更新时间
+     */
+    private Date payTime;
     /**
      * 对应商品信息
      */

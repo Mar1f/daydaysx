@@ -18,7 +18,7 @@ public class GoodsOrderQueryRequest extends PageRequest implements Serializable 
     /**
      * 订单 id
      */
-    private Long goodsId;
+    private Long id;
     /**
      * 订单状态
      */
@@ -28,6 +28,10 @@ public class GoodsOrderQueryRequest extends PageRequest implements Serializable 
      * 用户 id
      */
     private Long userId;
+    /**
+     * 商品名称
+     */
+    private String title;
 
     private static final long serialVersionUID = 1L;
 }

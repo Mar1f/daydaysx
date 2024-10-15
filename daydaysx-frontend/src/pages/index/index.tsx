@@ -1,5 +1,6 @@
 import {
-  listGoodsVoByPageFastUsingPost
+  listGoodsVoByPageFastUsingPost,
+  listGoodsByPageUsingPost
 } from '@/services/backend/goodsController';
 import { UserOutlined } from '@ant-design/icons';
 import { PageContainer, ProFormSelect, ProFormText, QueryFilter } from '@ant-design/pro-components';
@@ -13,7 +14,7 @@ import { Link } from 'umi';
  */
 const DEFAULT_PAGE_PARAMS: PageRequest = {
   current: 1,
-  pageSize: 4,
+  pageSize: 8,
   sortField: 'createTime',
   sortOrder: 'descend',
 };
@@ -31,13 +32,23 @@ const IndexPage: React.FC = () => {
     ...DEFAULT_PAGE_PARAMS,
   });
 
+  // 当前的 Tab 键
+  const [activeTabKey, setActiveTabKey] = useState<string>('newest');
+
   /**
    * 搜索
    */
   const doSearch = async () => {
     setLoading(true);
     try {
-      const res = await listGoodsVoByPageFastUsingPost(searchParams);
+      const params = {
+        ...searchParams,
+        ...(activeTabKey === 'recommend' ? { minBuysNum: 500 } : {}),
+      };
+
+      console.log('请求参数:', params); // 打印请求参数，调试用
+
+      const res = await listGoodsVoByPageFastUsingPost(params);
       setDataList(res.data?.records ?? []);
       setTotal(Number(res.data?.total) ?? 0);
     } catch (error: any) {
@@ -46,9 +57,10 @@ const IndexPage: React.FC = () => {
     setLoading(false);
   };
 
+
   useEffect(() => {
     doSearch();
-  }, [searchParams]);
+  }, [searchParams, activeTabKey]);
 
   /**
    * 标签列表
@@ -107,7 +119,7 @@ const IndexPage: React.FC = () => {
             label: '推荐',
           },
         ]}
-        onChange={() => {}}
+        onChange={(key) => setActiveTabKey(key)}
       />
 
       <QueryFilter
@@ -125,18 +137,26 @@ const IndexPage: React.FC = () => {
           });
         }}
       >
-        <ProFormSelect label="商品类别" name="tags" mode="tags" />
+        <ProFormSelect label="商品类别" name="tags"  mode="multiple" // 允许多选
+                       options={[
+                         { label: '新鲜水果', value: '新鲜水果' },
+                         { label: '海鲜水产', value: '海鲜水产' },
+                         { label: '猪牛羊肉', value: '猪牛羊肉' },
+                         { label: '禽类蛋品', value: '禽类蛋品' },
+                         { label: '新鲜蔬菜', value: '新鲜蔬菜' },
+                         { label: '速冻食品', value: '速冻食品' },
+                       ]} />
         <ProFormText label="名称" name="title" />
         <ProFormText label="描述" name="content" />
       </QueryFilter>
 
-      <div style={{ marginBottom: 24 }} />
+      <div style={{ marginBottom: 10 }} />
 
       <List<API.GoodsVO>
         rowKey="id"
         loading={loading}
         grid={{
-          gutter: 16,
+          gutter: 8,
           xs: 1,
           sm: 2,
           md: 3,
@@ -165,7 +185,11 @@ const IndexPage: React.FC = () => {
                   title={<a>{data.title}</a>}
                   description={
                     <Typography.Paragraph ellipsis={{ rows: 2 }} style={{ height: 44 }}>
-                      {data.content}
+                      {data.content}<br/>
+                      <span style={{ color: data.buysNum > 500 ? 'red' : 'blue', fontWeight: 'bold' }}>
+              销量：{data.buysNum}
+                        {data.buysNum > 500 && <span>🔥</span>}
+            </span>
                     </Typography.Paragraph>
                   }
                 />

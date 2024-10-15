@@ -1,0 +1,91 @@
+/* CardCarousel.css */
+
+/* 额外的包裹容器用于缩放整体布局 */
+.outer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh; /* 视口高度，保证布局居中 */
+  transform: scale(0.8); /* 缩放比例 (比如 0.7 即为缩小到原来的 70%) */
+}
+
+/* 原始的 .container 保持不变 */
+.container {
+  width: 300px;
+  height: 450px;
+  perspective: 1000px;
+  position: relative;
+}
+
+.card-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateY(0) translateZ(-700px);
+  animation: cardRotate 12s cubic-bezier(0.77, 0, 0.175, 1) infinite; /* 速度调整为12秒更平滑 */
+}
+
+.card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 120%;
+  height: 120%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-box-reflect: below 15px -webkit-linear-gradient(transparent 50%, rgba(255, 255, 255, 0.3));
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+}
+
+/* 旋转五个卡片，角度为72度 (360/5) */
+.card:nth-child(1) {
+  transform: rotateY(0deg) translateZ(700px);
+}
+
+.card:nth-child(2) {
+  transform: rotateY(72deg) translateZ(700px);
+}
+
+.card:nth-child(3) {
+  transform: rotateY(144deg) translateZ(700px);
+}
+
+.card:nth-child(4) {
+  transform: rotateY(216deg) translateZ(700px);
+}
+
+.card:nth-child(5) {
+  transform: rotateY(288deg) translateZ(700px);
+}
+
+/* 调整动画关键帧，适配五个卡片的旋转 */
+@keyframes cardRotate {
+  0%,
+  20% {
+    transform: translateZ(-700px) rotateY(0);
+  }
+
+  40% {
+    transform: translateZ(-700px) rotateY(-72deg);
+  }
+
+  60% {
+    transform: translateZ(-700px) rotateY(-144deg);
+  }
+
+  80% {
+    transform: translateZ(-700px) rotateY(-216deg);
+  }
+
+  100% {
+    transform: translateZ(-700px) rotateY(-288deg);
+  }
+}

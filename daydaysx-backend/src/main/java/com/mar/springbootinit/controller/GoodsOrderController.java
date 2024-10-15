@@ -78,10 +78,9 @@ public class GoodsOrderController {
         if (goods == null || goods.getGoodsNum() < goodsNum) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "商品不存在或库存不足");
         }
-
         // 4. 减少库存
         goods.setGoodsNum( goods.getGoodsNum() - goodsNum);
-
+        goods.setBuysNum( goods.getBuysNum() + goodsNum);
         // 5. 更新库存到数据库
         boolean updateSuccess = goodsService.updateById(goods);
         if (!updateSuccess) {

@@ -215,11 +215,12 @@ declare namespace API {
 
   type GoodsOrderQueryRequest = {
     current?: number;
-    goodsId?: number;
+    id?: number;
     pageSize?: number;
     placeStatus?: number;
     sortField?: string;
     sortOrder?: string;
+    title?: string;
     userId?: number;
   };
 
@@ -231,8 +232,10 @@ declare namespace API {
     goodsVO?: GoodsVO;
     id?: number;
     orderPrice?: number;
+    payTime?: string;
     placeStatus?: number;
     startPlace?: string;
+    title?: string;
     updateTime?: string;
     userId?: number;
   };
@@ -243,6 +246,7 @@ declare namespace API {
     current?: number;
     goodsNum?: number;
     id?: number;
+    minBuysNum?: number;
     number?: number;
     pageSize?: number;
     place?: string;

@@ -1,5 +1,6 @@
 package com.mar.springbootinit.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mar.springbootinit.annotation.AuthCheck;
 import com.mar.springbootinit.common.BaseResponse;
@@ -148,7 +149,11 @@ public class UserController {
         // 默认密码 12345678
         String defaultPassword = "12345678";
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + defaultPassword).getBytes());
-        user.setUserPassword(encryptPassword);
+        String userPic = userAddRequest.getUserAvatar();
+        if(userPic != null){
+            user.setUserAvatar(JSONUtil.toJsonStr(userPic));
+        }
+            user.setUserPassword(encryptPassword);
         boolean result = userService.save(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(user.getId());

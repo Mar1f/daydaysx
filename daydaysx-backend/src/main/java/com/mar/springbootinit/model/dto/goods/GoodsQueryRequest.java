@@ -67,7 +67,10 @@ public class GoodsQueryRequest extends PageRequest implements Serializable {
      * 购买数
      */
     private Integer buysNum;
-
+    /**
+     * 推荐过滤数量
+     */
+    private Integer minBuysNum;
     /**
      * 卖家 id
      */

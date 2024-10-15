@@ -53,6 +53,5 @@ public class GoodsUpdateRequest implements Serializable {
      * 库存
      */
     private Integer number;
-
     private static final long serialVersionUID = 1L;
 }

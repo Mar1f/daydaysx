@@ -21,6 +21,10 @@ public class GoodsOrder implements Serializable {
     private Long id;
 
     /**
+     * 商品名字
+     */
+    private String title;
+    /**
      * 支付宝交易id
      */
     private String alipay_trade_no;

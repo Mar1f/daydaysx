@@ -66,6 +66,7 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         goodsOrder.setGoodsId(goodsId);
         goodsOrder.setStartPlace(goods.getPlace());
         goodsOrder.setArrivePlace(loginUser.getUserPlace());
+        goodsOrder.setTitle(goods.getTitle());
         goodsOrder.setGoodsNum(goodsOrderAddRequest.getGoodsNum());
         BigDecimal goodsNum = BigDecimal.valueOf(goodsOrderAddRequest.getGoodsNum());
         BigDecimal price = goods.getPrice();
@@ -94,15 +95,16 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         if (goodsOrderQueryRequest == null) {
             return queryWrapper;
         }
-        Long goodsId = goodsOrderQueryRequest.getGoodsId();
+        Long Id = goodsOrderQueryRequest.getId();
         Long userId = goodsOrderQueryRequest.getUserId();
         Integer status = goodsOrderQueryRequest.getPlaceStatus();
         String sortField = goodsOrderQueryRequest.getSortField();
         String sortOrder = goodsOrderQueryRequest.getSortOrder();
-
+        String title = goodsOrderQueryRequest.getTitle();
         // 拼接查询条件
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
-        queryWrapper.eq(ObjectUtils.isNotEmpty(goodsId), "goodsId", goodsId);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(title), "title", title);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(Id), "Id", Id);
         queryWrapper.eq(GoodsOrderStatusEnum.getEnumByValue(status) != null, "status", status);
         queryWrapper.eq("isDelete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),

@@ -132,6 +132,10 @@ public class GoodsController {
                 "createTime",
                 "updateTime"
         );
+        // 添加销量过滤逻辑
+        if (goodsQueryRequest.getMinBuysNum() != null) {
+            queryWrapper.ge("buysNum", goodsQueryRequest.getMinBuysNum());
+        }
         Page<Goods> goodsPage = goodsService.page(new Page<>(current, size), queryWrapper);
         Page<GoodsVO> goodsVOPage = goodsService.getGoodsVOPage(goodsPage, request);
         // 写入缓存

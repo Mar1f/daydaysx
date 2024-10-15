@@ -81,4 +81,3 @@ CREATE TABLE IF NOT EXISTS shopping_cart (
      FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE,
      FOREIGN KEY (goodsId) REFERENCES goods(id) ON DELETE CASCADE
 ) COMMENT '购物车' COLLATE = utf8mb4_unicode_ci;
-

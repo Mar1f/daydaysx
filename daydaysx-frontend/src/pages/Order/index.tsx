@@ -21,23 +21,23 @@ const GoodsAdminPage: React.FC = () => {
   /**
    * 表格列配置
    */
-  const columns: ProColumns<API.GoodsOrderVO,API.GoodsVO>[] = [
+  const columns: ProColumns<API.GoodsOrderVO>[] = [
     {
       title: '订单号',
       dataIndex: 'id',
       valueType: 'text',
       hideInForm: true,
     },
-    {
-      title: '商品ID',
-      dataIndex: 'goodsId',
-      valueType: 'text',
-    },
     // {
-    //   title: '商品',
-    //   dataIndex: 'title',
+    //   title: '商品ID',
+    //   dataIndex: 'goodsId',
     //   valueType: 'text',
     // },
+    {
+      title: '商品',
+      dataIndex: 'title',
+      valueType: 'text',
+    },
     {
       title: '收货地址',
       dataIndex: 'arrivePlace',
@@ -54,7 +54,7 @@ const GoodsAdminPage: React.FC = () => {
       valueType: 'text',
     },
     {
-      title: '订单价格',
+      title: '订单价格（元）',
       dataIndex: 'orderPrice',
       valueType: 'text',
     },
@@ -75,21 +75,21 @@ const GoodsAdminPage: React.FC = () => {
       valueType: 'text',
     },
     {
-      title: '创建时间',
+      title: '下单时间',
       sorter: true,
-      dataIndex: 'createTime',
+      dataIndex: 'payTime',
       valueType: 'dateTime',
       hideInSearch: true,
       hideInForm: true,
     },
-    {
-      title: '更新时间',
-      sorter: true,
-      dataIndex: 'updateTime',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      hideInForm: true,
-    },
+    // {
+    //   title: '更新时间',
+    //   sorter: true,
+    //   dataIndex: 'updateTime',
+    //   valueType: 'dateTime',
+    //   hideInSearch: true,
+    //   hideInForm: true,
+    // },
     {
       title: '操作',
       dataIndex: 'option',
