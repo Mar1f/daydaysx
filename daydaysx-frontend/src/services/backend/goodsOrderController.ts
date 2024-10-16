@@ -31,3 +31,18 @@ export async function listGoodsOrderByPageUsingPost(
     ...(options || {}),
   });
 }
+
+/** updateOrderStatus POST /api/goods_order/updateStatus */
+export async function updateOrderStatusUsingPost(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.updateOrderStatusUsingPOSTParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean_>('/api/goods_order/updateStatus', {
+    method: 'POST',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}

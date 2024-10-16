@@ -1,5 +1,6 @@
 package com.mar.springbootinit.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mar.springbootinit.common.BaseResponse;
 import com.mar.springbootinit.common.ErrorCode;
@@ -97,22 +98,81 @@ public class GoodsOrderController {
                                                                  HttpServletRequest request) {
         long current = goodsOrderQueryRequest.getCurrent();
         long size = goodsOrderQueryRequest.getPageSize();
+
         // 获取当前登录的用户
         final User loginUser = userService.getLoginUser(request);
-
-        // 获取当前用户的ID
         Long loginUserId = loginUser.getId();
 
-        // 查询当前登录用户的订单
-        Page<GoodsOrder> goodsOrderPage = goodsOrderService.page(new Page<>(current, size),
-                goodsOrderService.getQueryWrapper(goodsOrderQueryRequest)
-                        .eq("userId", loginUserId)); // 添加过滤条件：只显示当前用户创建的订单
+        // 查询当前登录用户作为买家或卖家的订单
+        QueryWrapper<GoodsOrder> queryWrapper = goodsOrderService.getQueryWrapper(goodsOrderQueryRequest)
+                .and(wrapper -> wrapper.eq("userId", loginUserId)  // 当前用户是买家
+                        .or().eq("sellerId", loginUserId));  // 当前用户是卖家
+
+        Page<GoodsOrder> goodsOrderPage = goodsOrderService.page(new Page<>(current, size), queryWrapper);
 
         // 返回脱敏后的订单信息
         return ResultUtils.success(goodsOrderService.getGoodsOrderVOPage(goodsOrderPage, loginUser));
     }
 
+    /**
+     * 卖家发货或买家确认收货
+     * @param orderId 订单ID
+     * @param request HttpServletRequest
+     * @return 状态更新结果
+     */
+    @PostMapping("/updateStatus")
+    public BaseResponse<Boolean> updateOrderStatus(@RequestParam Long orderId,
+                                                   @RequestParam Integer newStatus,
+                                                   HttpServletRequest request) {
+        // 获取当前登录的用户
+        User loginUser = userService.getLoginUser(request);
 
+        // 获取订单信息
+        GoodsOrder goodsOrder = goodsOrderService.getById(orderId);
+        if (goodsOrder == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "订单不存在");
+        }
 
+        // 检查是否已经是目标状态，避免重复操作
+        if (goodsOrder.getPlaceStatus().equals(newStatus)) {
+            return ResultUtils.success(true);
+        }
+
+        // 校验不同状态更新的权限及合法性
+        switch (newStatus) {
+            case 2: // 发货操作
+                // 只有卖家可以发货，且当前状态必须为"1: 未发货"
+                if (!loginUser.getId().equals(goodsOrder.getSellerId())) {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "只有卖家可以发货");
+                }
+                if (goodsOrder.getPlaceStatus() != 1) {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "订单状态不正确，无法发货");
+                }
+                break;
+
+            case 3: // 确认收货操作
+                // 只有买家可以确认收货，且当前状态必须为"2: 配送中"
+                if (!loginUser.getId().equals(goodsOrder.getUserId())) {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "只有买家可以确认收货");
+                }
+                if (goodsOrder.getPlaceStatus() != 2) {
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR, "订单状态不正确，无法确认收货");
+                }
+                break;
+
+            default:
+                throw new BusinessException(ErrorCode.PARAMS_ERROR, "不支持的订单状态更新操作");
+        }
+
+        // 更新订单状态
+        goodsOrder.setPlaceStatus(newStatus);
+        boolean updateResult = goodsOrderService.updateById(goodsOrder);
+
+        if (!updateResult) {
+            return ResultUtils.error(ErrorCode.PARAMS_ERROR, "更新订单状态失败");
+        }
+
+        return ResultUtils.success(true);
+    }
 
 }

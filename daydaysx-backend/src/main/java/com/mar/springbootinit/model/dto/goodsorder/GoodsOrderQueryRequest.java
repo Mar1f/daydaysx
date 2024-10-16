@@ -29,6 +29,10 @@ public class GoodsOrderQueryRequest extends PageRequest implements Serializable 
      */
     private Long userId;
     /**
+     * 用户 id
+     */
+    private Long sellerId;
+    /**
      * 商品名称
      */
     private String title;

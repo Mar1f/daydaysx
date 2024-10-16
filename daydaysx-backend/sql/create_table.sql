@@ -61,6 +61,7 @@ create table if not exists goods_order
     index idx_goodsId (goodsId),
     index idx_userId (userId)
 ) comment '订单';
+ALTER TABLE goods_order ADD COLUMN sellerId BIGINT NOT NULL;
 
 
 -- 购物车表

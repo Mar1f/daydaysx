@@ -218,6 +218,7 @@ declare namespace API {
     id?: number;
     pageSize?: number;
     placeStatus?: number;
+    sellerId?: number;
     sortField?: string;
     sortOrder?: string;
     title?: string;
@@ -234,6 +235,7 @@ declare namespace API {
     orderPrice?: number;
     payTime?: string;
     placeStatus?: number;
+    sellerId?: number;
     startPlace?: string;
     title?: string;
     updateTime?: string;
@@ -489,6 +491,13 @@ declare namespace API {
     updateTime?: string;
     user?: UserVO;
     userId?: number;
+  };
+
+  type updateOrderStatusUsingPOSTParams = {
+    /** newStatus */
+    newStatus: number;
+    /** orderId */
+    orderId: number;
   };
 
   type uploadFileUsingPOSTParams = {

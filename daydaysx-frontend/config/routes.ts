@@ -22,7 +22,7 @@ export default [
     ],
   },
   { path: '/cart', icon: 'ShoppingCartOutlined', component: './cart/index', name: '购物车' },
-  { path: '/order', icon: 'ShoppingCartOutlined', component: './Order/index', name: '订单' },
+  { path: '/order', icon: 'ShoppingCartOutlined', component: './Order/index', name: '买家订单' },
   { path: '/about', icon: 'ShoppingCartOutlined', component: './Our/about', name: '关于我们' },
 
   {

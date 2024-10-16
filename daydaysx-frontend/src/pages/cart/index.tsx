@@ -8,6 +8,8 @@ import { ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import { Button, message, Select, Space, Tag, Typography, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
+import {PlusOutlined} from "@ant-design/icons";
+import CreateModal from "@/pages/Goods/Detail/components/CreateModal";
 
 /**
  * 购物车管理页面
@@ -20,6 +22,8 @@ const CartPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   // 当前商品点击的数据
   const [currentRow, setCurrentRow] = useState<API.CartVO>();
+// 是否显示新建窗口
+  const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
 
   /**
    * 删除商品
@@ -91,12 +95,34 @@ const CartPage: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => { setCurrentRow(record); setIsUpdateModalVisible(true); }}>
-            修改
-          </Button>
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                console.log("下单")
+                // handleDelete(record)
+                setCreateModalVisible(true);
+
+              }}
+            >
+              下单
+            </Button>,
           <Button type="link" danger onClick={() => handleDelete(record)}>
             删除
           </Button>
+          <CreateModal
+            visible={createModalVisible}
+            goodsId={record.goodsId}
+            onSubmit={async (values) => {
+              setCreateModalVisible(false);
+              // 提交表单值，包括商品ID
+              console.log(values);
+              await handleDelete(record); // 在下单成功后删除商品
+            }}
+            onCancel={() => {
+              setCreateModalVisible(false);
+            }}
+          />
         </Space>
       ),
     },

@@ -67,6 +67,7 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         goodsOrder.setStartPlace(goods.getPlace());
         goodsOrder.setArrivePlace(loginUser.getUserPlace());
         goodsOrder.setTitle(goods.getTitle());
+        goodsOrder.setSellerId(goods.getUserId());
         goodsOrder.setGoodsNum(goodsOrderAddRequest.getGoodsNum());
         BigDecimal goodsNum = BigDecimal.valueOf(goodsOrderAddRequest.getGoodsNum());
         BigDecimal price = goods.getPrice();
@@ -97,11 +98,13 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderMapper, GoodsOr
         }
         Long Id = goodsOrderQueryRequest.getId();
         Long userId = goodsOrderQueryRequest.getUserId();
+        Long sellerId = goodsOrderQueryRequest.getSellerId();
         Integer status = goodsOrderQueryRequest.getPlaceStatus();
         String sortField = goodsOrderQueryRequest.getSortField();
         String sortOrder = goodsOrderQueryRequest.getSortOrder();
         String title = goodsOrderQueryRequest.getTitle();
         // 拼接查询条件
+        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "sellerId", sellerId);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
         queryWrapper.eq(ObjectUtils.isNotEmpty(title), "title", title);
         queryWrapper.eq(ObjectUtils.isNotEmpty(Id), "Id", Id);

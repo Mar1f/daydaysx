@@ -35,6 +35,10 @@ public class GoodsOrderVO implements Serializable {
      * 买家的id
      */
     private Long userId;
+    /**
+     * 卖家的id
+     */
+    private Long sellerId;
 
     /**
      * 购买数量
