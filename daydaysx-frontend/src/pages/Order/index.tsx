@@ -156,15 +156,15 @@ const BuyerSellerOrderPage: React.FC = () => {
   // Tab: 买家订单和卖家订单切换
   return (
     <div className="buyer-seller-order-page">
-      <Typography.Title level={4} style={{ marginBottom: 16 }}>
-        订单管理
-      </Typography.Title>
+      {/*<Typography.Title level={4} style={{ marginBottom: 16 }}>*/}
+      {/*  订单管理*/}
+      {/*</Typography.Title>*/}
       {currentUserId && (
         <Tabs defaultActiveKey="buyer">
           {/* 买家订单 */}
           <Tabs.TabPane tab="买家订单" key="buyer">
             <ProTable<API.GoodsOrderVO>
-              headerTitle={'买家订单'}
+              // headerTitle={'买家订单'}
               actionRef={actionRef}
               rowKey="id"
               search={{
@@ -188,7 +188,7 @@ const BuyerSellerOrderPage: React.FC = () => {
           {/* 卖家订单 */}
           <Tabs.TabPane tab="卖家订单" key="seller">
             <ProTable<API.GoodsOrderVO>
-              headerTitle={'卖家订单'}
+              // headerTitle={'卖家订单'}
               actionRef={actionRef}
               rowKey="id"
               search={{

@@ -8,6 +8,7 @@ import { Avatar, Card, Flex, Image, Input, List, message, Tabs, Tag, Typography 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'umi';
+import {within} from "@testing-library/dom";
 
 /**
  * 默认分页参数
@@ -123,11 +124,11 @@ const IndexPage: React.FC = () => {
       />
 
       <QueryFilter
-        span={12}
+        span={6}
         labelWidth="auto"
         labelAlign="left"
         defaultCollapsed={false}
-        style={{ padding: '16px 0' }}
+        style={{ padding: '12px 0' }}
         onFinish={async (values: API.GoodsQueryRequest) => {
           setSearchParams({
             ...DEFAULT_PAGE_PARAMS,
@@ -138,6 +139,8 @@ const IndexPage: React.FC = () => {
         }}
       >
         <ProFormSelect label="商品类别" name="tags"  mode="multiple" // 允许多选
+                       colSize={1}  // Control the form item width within the grid layout
+                       fieldProps={{ style: { width: 200 } }} // Set the width of the select dropdown
                        options={[
                          { label: '新鲜水果', value: '新鲜水果' },
                          { label: '海鲜水产', value: '海鲜水产' },
@@ -145,12 +148,13 @@ const IndexPage: React.FC = () => {
                          { label: '禽类蛋品', value: '禽类蛋品' },
                          { label: '新鲜蔬菜', value: '新鲜蔬菜' },
                          { label: '速冻食品', value: '速冻食品' },
-                       ]} />
-        <ProFormText label="名称" name="title" />
-        <ProFormText label="描述" name="content" />
+                       ]}
+        />
+        <ProFormText label="商品名" name="title"  fieldProps={{ style: { width: 200 } }}/>
+        <ProFormText label="描述" name="content" fieldProps={{ style: { width: 300 } }}/>
       </QueryFilter>
 
-      <div style={{ marginBottom: 10 }} />
+      <div style={{ marginBottom: 1 }} />
 
       <List<API.GoodsVO>
         rowKey="id"

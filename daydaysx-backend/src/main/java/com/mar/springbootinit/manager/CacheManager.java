@@ -21,7 +21,7 @@ public class CacheManager {
      * 本地缓存
      */
     Cache<String, Object> localCache = Caffeine.newBuilder()
-            .expireAfterWrite(100, TimeUnit.MINUTES)
+            .expireAfterWrite(5, TimeUnit.MINUTES)
             .maximumSize(10_000)
             .build();
 
@@ -33,7 +33,7 @@ public class CacheManager {
      */
     public void put(String key, Object value) {
         localCache.put(key, value);
-        redisTemplate.opsForValue().set(key, value, 100, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(key, value, 5, TimeUnit.MINUTES);
     }
 
     /**
@@ -60,7 +60,7 @@ public class CacheManager {
     }
 
     /**
-     * 一处缓存
+     * 删除缓存
      *
      * @param key
      */
