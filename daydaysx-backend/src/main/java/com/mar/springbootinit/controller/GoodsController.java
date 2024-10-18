@@ -153,6 +153,8 @@ public class GoodsController {
         // 请求参数编码
         String base64 = Base64Encoder.encode(jsonStr);
         String key = "goods:page:" + base64;
+        // 打印缓存键
+        System.out.println("Generated Cache Key: " + key);
         return key;
     }
     /**

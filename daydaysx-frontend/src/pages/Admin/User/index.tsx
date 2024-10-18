@@ -59,6 +59,7 @@ const UserAdminPage: React.FC = () => {
       title: '账号',
       dataIndex: 'userAccount',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '用户名',
@@ -78,6 +79,7 @@ const UserAdminPage: React.FC = () => {
       title: '简介',
       dataIndex: 'userProfile',
       valueType: 'textarea',
+      hideInSearch: true,
     },
     {
       title: '权限',

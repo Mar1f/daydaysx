@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
+import static com.squareup.okhttp.internal.Internal.logger;
+
 /**
  * 多级缓存
  */
@@ -32,6 +34,7 @@ public class CacheManager {
      * @param value
      */
     public void put(String key, Object value) {
+        logger.info(key);  // 添加日志
         localCache.put(key, value);
         redisTemplate.opsForValue().set(key, value, 5, TimeUnit.MINUTES);
     }
@@ -43,6 +46,7 @@ public class CacheManager {
      * @return
      */
     public Object get(String key) {
+        logger.info(key);  // 添加日志
         // 先从本地缓存中获取
         Object value = localCache.getIfPresent(key);
         if (value != null) {
@@ -65,6 +69,7 @@ public class CacheManager {
      * @param key
      */
     public void delete(String key) {
+        logger.info(key);  // 添加日志
         localCache.invalidate(key);
         redisTemplate.delete(key);
     }

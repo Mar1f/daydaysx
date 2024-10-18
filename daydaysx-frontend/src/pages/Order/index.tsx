@@ -4,7 +4,15 @@ import { ProTable } from '@ant-design/pro-components';
 import { Button, Space, Tabs, Typography, message } from 'antd';
 import React, { useRef, useState, useEffect } from 'react';
 import { getLoginUserUsingGet } from '@/services/backend/userController';
-
+/**
+ * 默认分页参数
+ */
+const DEFAULT_PAGE_PARAMS: PageRequest = {
+  current: 1,
+  pageSize: 8,
+  sortField: 'createTime',
+  sortOrder: 'descend',
+};
 const BuyerSellerOrderPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
@@ -73,21 +81,25 @@ const BuyerSellerOrderPage: React.FC = () => {
       title: '收货地址',
       dataIndex: 'arrivePlace',
       valueType: 'textarea',
+      hideInSearch: true,
     },
     {
       title: '发货地址',
       dataIndex: 'startPlace',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '购买数量',
       dataIndex: 'goodsNum',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '订单价格（元）',
       dataIndex: 'orderPrice',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '状态',
@@ -99,6 +111,9 @@ const BuyerSellerOrderPage: React.FC = () => {
         2: { text: '配送中', status: 'Processing' },
         3: { text: '已送达', status: 'Success' },
       },
+      filters: true, // 增加过滤器
+      onFilter: true, // 允许过滤
+      hideInSearch: true,
     },
     {
       title: '下单时间',
@@ -173,8 +188,11 @@ const BuyerSellerOrderPage: React.FC = () => {
               request={async (params, sort, filter) => {
                 const { data, code } = await listGoodsOrderByPageUsingPost({
                   ...params,
-                  ...filter,
+                  sortField: sort?.createTime ? 'createTime' : undefined,
+                  sortOrder: sort?.createTime,
+                  placeStatus: filter?.placeStatus ? filter.placeStatus[0] : undefined,  // 处理状态过滤条件
                 } as API.GoodsQueryRequest);
+
                 return {
                   success: code === 0,
                   data: data?.records?.filter(order => order.userId === currentUserId) || [], // 买家订单

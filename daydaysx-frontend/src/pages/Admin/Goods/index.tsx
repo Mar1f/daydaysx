@@ -57,6 +57,7 @@ const GoodsAdminPage: React.FC = () => {
       dataIndex: 'id',
       valueType: 'text',
       hideInForm: true,
+      hideInSearch:true
     },
     {
       title: '名称',
@@ -77,11 +78,13 @@ const GoodsAdminPage: React.FC = () => {
       title: '商品数量',
       dataIndex: 'goodsNum',
       valueType: 'text',
+      hideInSearch:true
     },
     {
       title: '商品单价',
       dataIndex: 'price',
       valueType: 'text',
+      hideInSearch:true
     },
     {
       title: '标签',
@@ -90,7 +93,16 @@ const GoodsAdminPage: React.FC = () => {
       renderFormItem(schema) {
         const { fieldProps } = schema;
         // @ts-ignore
-        return <Select mode="tags" {...fieldProps} />;
+        return <Select mode="tags"   colSize={1}  // Control the form item width within the grid layout
+                       fieldProps={{ style: { width: 200 } }} // Set the width of the select dropdown
+                       options={[
+                         { label: '新鲜水果', value: '新鲜水果' },
+                         { label: '海鲜水产', value: '海鲜水产' },
+                         { label: '猪牛羊肉', value: '猪牛羊肉' },
+                         { label: '禽类蛋品', value: '禽类蛋品' },
+                         { label: '新鲜蔬菜', value: '新鲜蔬菜' },
+                         { label: '速冻食品', value: '速冻食品' },
+                       ]} />;
       },
       render(_, record) {
         if (!record.tags) {
@@ -115,6 +127,7 @@ const GoodsAdminPage: React.FC = () => {
       title: '创建用户',
       dataIndex: 'userId',
       valueType: 'text',
+      hideInSearch:true
     },
     {
       title: '创建时间',
@@ -156,7 +169,7 @@ const GoodsAdminPage: React.FC = () => {
 
   return (
     <div className="goods-admin-page">
-      <Typography.Title level={4} style={{ marginBottom: 16 }}>
+      <Typography.Title level={4} style={{ marginBottom: 12 }}>
         商品管理
       </Typography.Title>
       <ProTable<API.Goods>

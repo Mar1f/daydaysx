@@ -146,6 +146,11 @@ declare namespace API {
     userId?: number;
   };
 
+  type deleteCacheUsingDELETEParams = {
+    /** key */
+    key: string;
+  };
+
   type DeleteRequest = {
     id?: number;
   };

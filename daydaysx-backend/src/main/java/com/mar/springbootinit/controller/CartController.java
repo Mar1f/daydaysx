@@ -122,9 +122,12 @@ public class CartController {
         long size = cartQueryRequest.getPageSize();
         // 限制爬虫
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
-        Page<Cart> cartPage = cartService.page(new Page<>(current, size),
-                cartService.getQueryWrapper(cartQueryRequest));
         final User loginUser = userService.getLoginUser(request);
+        Long loginUserId = loginUser.getId();
+        System.out.println("当前用户id:"+loginUserId);
+        Page<Cart> cartPage = cartService.page(new Page<>(current, size),
+                cartService.getQueryWrapper(cartQueryRequest).eq("userId", loginUserId));
+
         return ResultUtils.success(cartService.getCartVOPage(cartPage, loginUser));
     }
 
@@ -194,6 +197,7 @@ public class CartController {
 
         // 获取当前用户的ID
         Long loginUserId = loginUser.getId();
+        System.out.println("当前用户id:"+loginUserId);
 
         // 查询当前登录用户的订单
         Page<Cart> cartPage = cartService.page(new Page<>(current, size),
